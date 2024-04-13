@@ -46,7 +46,7 @@ find ./documentation/tmp/$pkg -type d -empty -delete
 #
 # change some aliases
 #
-sed -i 's/np.ndarray/"np.ndarray"/g' ./documentation/tmp/$pkg/aliases.py
+sed -i 's/np.ndarray/"np.ndarray"/g' ./documentation/tmp/$pkg/utils/aliases.py
 
 #
 #
