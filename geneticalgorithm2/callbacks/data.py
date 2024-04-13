@@ -48,7 +48,7 @@ class MiddleCallbackData(DictLikeGetSet):
 
 SimpleCallbackFunc: TypeAlias = Callable[[int, List[float], array2D, array1D], None]
 """
-Callback function perform any operations on 
+Callback function performs any operations on 
     (generation number, best scores report list, last population matrix, last scores vector)
 
 Notes: generation number cannot be changed
