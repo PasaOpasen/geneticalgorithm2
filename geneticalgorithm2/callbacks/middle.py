@@ -1,109 +1,32 @@
 
-from typing import List, Optional, Callable, Tuple, Sequence
+from typing import Optional, Callable, Tuple, Sequence
 
-import os
 import random
 
 import numpy as np
 
 from OppOpPopInit import OppositionOperators, SampleInitializers
+from OppOpPopInit.oppositor import OppositorFunc
+from OppOpPopInit.initialiser import CreatorFunc
 
-from .utils.aliases import TypeAlias, array1D, array2D, PathLike
-from .utils.files import mkdir
-from .utils.funcs import union_to_matrix, fast_max
+from ..utils.aliases import array1D, array2D
+from ..utils.funcs import union_to_matrix, fast_max
 
-from .data_types.generation import Generation
-from .data_types.callback import MiddleCallbackData
+from ..data_types.generation import Generation
+from .data import MiddleCallbackData, MiddleCallbackActionFunc, \
+    MiddleCallbackConditionFunc, MiddleCallbackFunc
 
-from .crossovers import CrossoverFunc
-from .selections import SelectionFunc
-from .mutations import MutationFunc
-
-# TODO refactor
-
-CallbackFunc: TypeAlias = Callable[[int, List[float], array2D, array1D], None]
-MiddleCallbackActionFunc: TypeAlias = Callable[[MiddleCallbackData], MiddleCallbackData]
-MiddleCallbackConditionFunc: TypeAlias = Callable[[MiddleCallbackData], bool]
-MiddleCallbackFunc: TypeAlias = Callable[[MiddleCallbackData], Tuple[MiddleCallbackData, bool]]
-
-
-class Callbacks:
-    
-    @staticmethod
-    def NoneCallback():
-        return lambda generation_number, report_list, last_population, last_scores: None
-
-    @staticmethod
-    def SavePopulation(folder: PathLike, save_gen_step: int = 50, file_prefix: str = 'population') -> CallbackFunc:
-        
-        mkdir(folder)
-
-        def func(generation_number: int, report_list: List[float], last_population: array2D, last_scores: array1D):
-    
-            if generation_number % save_gen_step != 0:
-                return
-
-            Generation(last_population, last_scores).save(
-                os.path.join(
-                    folder,
-                    f"{file_prefix}_{generation_number}.npz"
-                )
-            )
-        
-        return func
-    
-    @staticmethod
-    def PlotOptimizationProcess(
-        folder: PathLike,
-        save_gen_step: int = 50,
-        show: bool = False,
-        main_color: str = 'green',
-        file_prefix: str = 'report'
-    ) -> CallbackFunc:
-        import matplotlib.pyplot as plt
-        from matplotlib.ticker import MaxNLocator
-        
-        mkdir(folder)
-
-        def func(generation_number: int, report_list: List[float], last_population: array2D, last_scores: array1D):
-
-            if generation_number % save_gen_step != 0:
-                return
-
-            # if len(report_list) == 0:
-            #     sys.stdout.write("No results to plot!\n")
-            #     return
-            
-            ax = plt.axes()
-            ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-            
-            plt.plot(
-                np.arange(1, 1 + len(report_list)),
-                report_list,
-                color=main_color,
-                label='best of generation',
-                linewidth=2
-            )
-            
-            plt.xlabel('Generation')
-            plt.ylabel('Minimized function')
-            plt.title('GA optimization process')
-            plt.legend()
-            
-            plt.savefig(os.path.join(folder, f"{file_prefix}_{generation_number}.png"), dpi=200)
-
-            if show:
-                plt.show()
-            else:
-                plt.close()
-        
-        return func
+from ..crossovers import CrossoverFunc
+from ..selections import SelectionFunc
+from ..mutations import MutationFunc
 
 
 class Actions:
+    """Static class of built-in middle callback actions"""
 
     @staticmethod
     def Stop(reason_name: str = 'stopped by Stop callback') -> MiddleCallbackActionFunc:
+        """stops optimization"""
         
         def func(data: MiddleCallbackData):
             data.reason_to_stop = reason_name
@@ -112,13 +35,13 @@ class Actions:
 
     @staticmethod
     def ReduceMutationProb(reduce_coef: float = 0.9) -> MiddleCallbackActionFunc:
-        
+        """reduces mutation prob by the coefficient"""
+
         def func(data: MiddleCallbackData):
             data.mutation_prob *= reduce_coef
             return data
         
         return func
-
 
     #def DualStrategyStep():
     #    pass
@@ -126,11 +49,11 @@ class Actions:
     #def SetFunction():
     #    pass
 
-
     @staticmethod
     def ChangeRandomCrossover(
         available_crossovers: Sequence[CrossoverFunc]
     ) -> MiddleCallbackActionFunc:
+        """randomly changes crossover"""
 
         def func(data: MiddleCallbackData):
             data.crossover = random.choice(available_crossovers)
@@ -140,6 +63,7 @@ class Actions:
     
     @staticmethod
     def ChangeRandomSelection(available_selections: Sequence[SelectionFunc]) -> MiddleCallbackActionFunc:
+        """randomly changes selection function"""
 
         def func(data: MiddleCallbackData):
             data.selection = random.choice(available_selections)
@@ -149,52 +73,58 @@ class Actions:
 
     @staticmethod
     def ChangeRandomMutation(available_mutations: Sequence[MutationFunc]) -> MiddleCallbackActionFunc:
+        """randomly changes mutation function"""
 
         def func(data):
             data.mutation = random.choice(available_mutations)
             return data
 
         return func
-    
 
     @staticmethod
     def RemoveDuplicates(
-        oppositor: Optional[Callable[[array1D], array1D]] = None,
-        creator: Optional[Callable[[], array1D]] = None,
+        oppositor: Optional[OppositorFunc] = None,
+        creator: Optional[CreatorFunc] = None,
         converter: Optional[Callable[[array1D], array1D]] = None
     ) -> MiddleCallbackActionFunc:
         """
         Removes duplicates from population
 
-        Parameters
-        ----------
-        oppositor : oppositor from OppOpPopInit, optional
-            oppositor for applying after duplicates removing. By default -- using just random initializer from creator.
-                The default is None.
-        creator : the function creates population samples, optional
-            the function creates population samples if oppositor is None. The default is None.
-        converter : func, optional
-            function converts population samples in new format to compare (if needed). The default is None.
+        Args:
+            oppositor: oppositor from OppOpPopInit, optional
+                oppositor for applying after duplicates removing.
+                None (default) means to just use the random initializer from creator.
+            creator: the function creates population samples, optional
+                the function creates population samples if oppositor is None. The default is None.
+            converter: function converts (preprocesses) population samples in new format to compare (if needed)
+                before duplicates will be searched
 
         """
 
-        if creator is None and oppositor is None:
-            raise Exception("No functions to fill population! creator or oppositors must be not None")
+        assert creator is not None or oppositor is not None, (
+            "No functions to fill population! creator or oppositors must be not None"
+        )
 
+        #
+        # create the function searches for duplicates
+        #
         if converter is None:
             def without_dup(pop: array2D, scores: array1D) -> Tuple[array2D, int]:
                 """returns population without dups"""
                 _, index_of_dups = np.unique(pop, axis=0, return_index=True)
                 return union_to_matrix(pop[index_of_dups], scores[index_of_dups]), pop.shape[0] - index_of_dups.size
         else:
-             def without_dup(pop: array2D, scores: array1D) -> Tuple[array2D, int]:
+            def without_dup(pop: array2D, scores: array1D) -> Tuple[array2D, int]:
                 """returns population without dups"""
                 _, index_of_dups = np.unique(
-                    np.array([converter(pop[i]) for i in range(pop.shape[0])]), axis=0, return_index=True
+                    np.array([converter(r) for r in pop]),
+                    axis=0, return_index=True
                 )
                 return union_to_matrix(pop[index_of_dups], scores[index_of_dups]), pop.shape[0] - index_of_dups.size
 
-
+        #
+        # create the function will create new samples instead of removed duplicates
+        #
         if oppositor is None:
             def remover(pop: array2D, scores: array1D, set_function: Callable[[array2D], array1D]) -> array2D:
 
@@ -205,7 +135,7 @@ class Actions:
 
                 new_pop = np.vstack((pp, pp2))
 
-                return new_pop[np.argsort(new_pop[:, -1])]  # new pop
+                return new_pop[new_pop[:, -1].argsort()]  # new pop
 
         else:  # using oppositors
             def remover(pop: array2D, scores: array1D, set_function: Callable[[array2D], array1D]) -> array2D:
@@ -216,7 +146,7 @@ class Actions:
                     raise Exception("Too many duplicates, cannot oppose")
                 
                 if count_to_create == 0:
-                    return pp[np.argsort(pp[:, -1])]
+                    return pp[pp[:, -1].argsort()]
                 
                 pp2 = np.empty((count_to_create, pp.shape[1])) 
                 # oppose count_to_create worse elements
@@ -225,7 +155,7 @@ class Actions:
                     
                 new_pop = np.vstack((pp, pp2))
                     
-                return new_pop[np.argsort(new_pop[:, -1])]  # new pop
+                return new_pop[new_pop[:, -1].argsort()]  # new pop
 
         def func(data: MiddleCallbackData):
             new_pop = remover(
@@ -237,7 +167,6 @@ class Actions:
             data.last_generation = Generation.from_pop_matrix(new_pop)
 
             return data
-
         
         return func
     
@@ -247,7 +176,7 @@ class Actions:
         Copies best population object values (from dimensions in by_indexes) to all population
         """
 
-        if type(by_indexes) != np.ndarray:
+        if not isinstance(by_indexes, np.ndarray):
             by_indexes = np.array(by_indexes)
 
         def func(data: MiddleCallbackData):
@@ -271,7 +200,7 @@ class Actions:
         plots population scores
         needs 2 functions like data->str for title and file name
         """
-        from .utils.plotting import plot_pop_scores
+        from ..utils.plotting import plot_pop_scores
 
         use_save_as = (lambda data: None) if save_as_name_pattern is None else save_as_name_pattern
 
@@ -289,7 +218,8 @@ class Actions:
 
 
 class ActionConditions:
-    
+    """Static class of built-in middle callback actions"""
+
     @staticmethod
     def EachGen(generation_step: int = 10) -> MiddleCallbackConditionFunc:
 
@@ -318,9 +248,8 @@ class ActionConditions:
             return data.current_stagnation % stagnation_generations == 0 and data.current_stagnation > 0
         return func
 
-
     @staticmethod
-    def Several(conditions: Sequence[MiddleCallbackConditionFunc]) -> MiddleCallbackConditionFunc:
+    def All(conditions: Sequence[MiddleCallbackConditionFunc]) -> MiddleCallbackConditionFunc:
         """
         returns function which checks all conditions from conditions
         """
@@ -330,8 +259,20 @@ class ActionConditions:
         
         return func
 
+    @staticmethod
+    def Any(conditions: Sequence[MiddleCallbackConditionFunc]) -> MiddleCallbackConditionFunc:
+        """
+        returns function which checks for any conditions from conditions
+        """
+
+        def func(data: MiddleCallbackData):
+            return any(cond(data) for cond in conditions)
+
+        return func
+
 
 class MiddleCallbacks:
+    """Static class for middle callbacks creation"""
 
     @staticmethod
     def UniversalCallback(
@@ -339,7 +280,17 @@ class MiddleCallbacks:
         condition: MiddleCallbackConditionFunc,
         set_data_after_callback: bool = True
     ) -> MiddleCallbackFunc:
-        
+        """
+        universal function which constructs middle callback from action and condition
+        Args:
+            action:
+            condition:
+            set_data_after_callback: whether to signal internal data update if action update the data
+
+        Returns:
+
+        """
+
         def func(data: MiddleCallbackData):
 
             cond = condition(data)
@@ -390,15 +341,13 @@ class MiddleCallbacks:
     @staticmethod
     def GeneDiversityStats(step_generations_for_plotting: int = 10) -> MiddleCallbackFunc:
 
-        if step_generations_for_plotting < 1:
-            raise Exception(f"Wrong step = {step_generations_for_plotting}, should be int and > 0!!")
+        assert step_generations_for_plotting > 0, step_generations_for_plotting
 
         import matplotlib.pyplot as plt
 
         div = []
         count = []
         most = []
-
 
         def func(data: MiddleCallbackData):
 

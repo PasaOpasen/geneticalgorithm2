@@ -21,14 +21,14 @@ from .utils.aliases import array1D, array2D
 from .data_types.algorithm_params import AlgorithmParams
 from .data_types.generation import GenerationConvertible, Generation
 from .data_types.result import GAResult
-from .data_types.callback import MiddleCallbackData
+from .callbacks.data import MiddleCallbackData
 
 from .population_initializer import get_population_initializer
 from .utils.plotting import plot_pop_scores, plot_several_lines
 
 from .utils.funcs import can_be_prob, is_numpy, is_current_gen_number, fast_min, random_indexes_pair
 
-from .callbacks import MiddleCallbackFunc, CallbackFunc
+from .callbacks import MiddleCallbackFunc, SimpleCallbackFunc
 
 #endregion
 
@@ -443,7 +443,7 @@ class GeneticAlgorithm2:
         ] = get_population_initializer(select_best_of=1, local_optimization_step='never', local_optimizer=None),
 
         stop_when_reached: Optional[float] = None,
-        callbacks: Optional[Sequence[CallbackFunc]] = None,
+        callbacks: Optional[Sequence[SimpleCallbackFunc]] = None,
         middle_callbacks: Optional[Sequence[MiddleCallbackFunc]] = None,  #+
         time_limit_secs: Optional[float] = None,
         save_last_generation_as: Optional[str] = None,

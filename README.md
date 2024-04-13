@@ -163,6 +163,8 @@ pip install geneticalgorithm2[full]
 - host the [code documentation](https://pasaopasen.github.io/geneticalgorithm2/)
 - rename `geneticalgorithm2` class to `GeneticAlgorithm2`
 - substantial package architecture refactor
+- add more docstrings
+- reduce documentation duplicates 
 
 ## 6.8.7 minor update
 
@@ -1308,7 +1310,7 @@ It's very simple to create your own `action` and `condition` functions. But ther
   * `ChangeRandomCrossover(available_crossovers: Sequence[Callable[[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]])` -- change another (random) crossover from list of crossovers
   * `ChangeRandomSelection(available_selections: Sequence[Callable[[np.ndarray, int], np.ndarray]])`
   * `ChangeRandomMutation(available_mutations: Sequence[Callable[[float, float, float], float]])`
-  * `RemoveDuplicates(oppositor = None, creator = None, converter = None)`; see [doc](geneticalgorithm2/callbacks.py)
+  * `RemoveDuplicates(oppositor = None, creator = None, converter = None)`; see [doc](geneticalgorithm2/callbacks/middle.py)
   * `CopyBest(by_indexes)` -- copies best population object values (from dimensions in `by_indexes`) to all population
   * `PlotPopulationScores(title_pattern = lambda data: f"Generation {data['current_generation']}", save_as_name_pattern = None)` -- plot population scores; needs 2 functions like `data`->string for title and file name (to save)
 * `conditions`:
