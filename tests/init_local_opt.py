@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 from DiscreteHillClimbing import Hill_Climbing_descent
 
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 from geneticalgorithm2 import Population_initializer
 
 

@@ -11,7 +11,7 @@ sys.path.append('..')
 
 import numpy as np
 from geneticalgorithm2 import AlgorithmParams
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 
 def function(X):
     return np.sum(X)

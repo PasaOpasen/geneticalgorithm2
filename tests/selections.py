@@ -12,7 +12,7 @@ sys.path.append('..')
 import numpy as np
 import matplotlib.pyplot as plt
 
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 from geneticalgorithm2 import Selection
 
 def f(X):

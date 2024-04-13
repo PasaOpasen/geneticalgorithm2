@@ -36,7 +36,7 @@ VARIABLE_TYPE: TypeAlias = Literal['int', 'real', 'bool']
 #endregion
 
 
-class geneticalgorithm2:
+class GeneticAlgorithm2:
     
     """
     Genetic Algorithm (Elitist version) for Python3.8+
@@ -363,9 +363,9 @@ class geneticalgorithm2:
 
         part = count / total
 
-        filled_len = round(geneticalgorithm2.PROGRESS_BAR_LEN * part)
+        filled_len = round(GeneticAlgorithm2.PROGRESS_BAR_LEN * part)
         percents = round(100.0 * part, 1)
-        bar = '|' * filled_len + '_' * (geneticalgorithm2.PROGRESS_BAR_LEN - filled_len)
+        bar = '|' * filled_len + '_' * (GeneticAlgorithm2.PROGRESS_BAR_LEN - filled_len)
 
         self.progress_stream.write('\r%s %s%s %s' % (bar, percents, '%', status))
         self.progress_stream.flush()
@@ -665,7 +665,7 @@ class geneticalgorithm2:
 
         ############################################################# 
         # Initial Population
-        self.set_function = set_function or geneticalgorithm2.default_set_function(self.f)
+        self.set_function = set_function or GeneticAlgorithm2.default_set_function(self.f)
 
         pop_coef, initializer_func = population_initializer
         

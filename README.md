@@ -326,21 +326,21 @@ Firstly, u should **import needed packages**. All available (but not always nece
 import numpy as np
 
 # the only one required import
-from geneticalgorithm2 import geneticalgorithm2 as ga # for creating and running optimization model
+from geneticalgorithm2 import GeneticAlgorithm2 as ga  # for creating and running optimization model
 
-from geneticalgorithm2 import Generation, AlgorithmParams # classes for comfortable parameters setting and getting
+from geneticalgorithm2 import Generation, AlgorithmParams  # classes for comfortable parameters setting and getting
 
-from geneticalgorithm2 import Crossover, Mutations, Selection # classes for specific mutation and crossover behavior
+from geneticalgorithm2 import Crossover, Mutations, Selection  # classes for specific mutation and crossover behavior
 
-from geneticalgorithm2 import Population_initializer # for creating better start population
+from geneticalgorithm2 import Population_initializer  # for creating better start population
 
-from geneticalgorithm2 import np_lru_cache # for cache function (if u want)
+from geneticalgorithm2 import np_lru_cache  # for cache function (if u want)
 
-from geneticalgorithm2 import plot_pop_scores # for plotting population scores, if u want
+from geneticalgorithm2 import plot_pop_scores  # for plotting population scores, if u want
 
-from geneticalgorithm2 import Callbacks # simple callbacks (will be deprecated)
+from geneticalgorithm2 import Callbacks  # simple callbacks (will be deprecated)
 
-from geneticalgorithm2 import Actions, ActionConditions, MiddleCallbacks # middle callbacks
+from geneticalgorithm2 import Actions, ActionConditions, MiddleCallbacks  # middle callbacks
 ```
 
 Next step: **define minimized function** like
@@ -565,32 +565,33 @@ An example of setting a new set of parameters for genetic algorithm and running 
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
+
 
 def f(X):
     return np.sum(X)
-    
-    
-varbound=[(0,10)]*3
+
+
+varbound = [(0, 10)] * 3
 
 algorithm_param = {'max_num_iteration': 3000,
-                   'population_size':100,
+                   'population_size': 100,
                    'mutation_probability': 0.1,
                    'mutation_discrete_probability': None,
                    'elit_ratio': 0.01,
                    'parents_portion': 0.3,
-                   'crossover_type':'uniform',
+                   'crossover_type': 'uniform',
                    'mutation_type': 'uniform_by_center',
                    'mutation_discrete_type': 'uniform_discrete',
                    'selection_type': 'roulette',
-                   'max_iteration_without_improv':None}
+                   'max_iteration_without_improv': None}
 
-model=ga(function=f,
-            dimension=3,
-            variable_type='real',
-            variable_boundaries=varbound,
-            algorithm_parameters=algorithm_param
-        )
+model = ga(function=f,
+           dimension=3,
+           variable_type='real',
+           variable_boundaries=varbound,
+           algorithm_parameters=algorithm_param
+           )
 
 model.run()
 ```
@@ -790,13 +791,14 @@ function `f` which we want to minimize and the boundaries of the decision variab
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
+
 
 def f(X):
     return np.sum(X)
-    
-    
-varbound = [[0,10]]*3
+
+
+varbound = [[0, 10]] * 3
 
 model = ga(function=f, dimension=3, variable_type='real', variable_boundaries=varbound)
 
@@ -835,13 +837,14 @@ In this case the code is as the following:
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
+
 
 def f(X):
     return np.sum(X)
-    
-    
-varbound = [[0,10]]*3
+
+
+varbound = [[0, 10]] * 3
 
 model = ga(function=f, dimension=3, variable_type='int', variable_boundaries=varbound)
 
@@ -857,10 +860,12 @@ In this case the code is as the following:
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
+
 
 def f(X):
     return np.sum(X)
+
 
 model = ga(function=f, dimension=30, variable_type='bool')
 
@@ -879,12 +884,14 @@ We implement geneticalgorithm2 as the following:
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
+
 
 def f(X):
     return np.sum(X)
-    
-varbound = [[0.5,1.5],[1,100],[0,1]]
+
+
+varbound = [[0.5, 1.5], [1, 100], [0, 1]]
 vartype = ('real', 'int', 'int')
 model = ga(function=f, dimension=3, variable_type=vartype, variable_boundaries=varbound)
 
@@ -897,17 +904,19 @@ In such a case, a trick is to define penalty function. Hence we use the code bel
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
+
 
 def f(X):
-    pen=0
-    if X[0]+X[1]<2:
-        pen=500+1000*(2-X[0]-X[1])
-    return np.sum(X)+pen
-    
-varbound=[[0,10]]*3
+    pen = 0
+    if X[0] + X[1] < 2:
+        pen = 500 + 1000 * (2 - X[0] - X[1])
+    return np.sum(X) + pen
 
-model=ga(function=f,dimension=3,variable_type='real',variable_boundaries=varbound)
+
+varbound = [[0, 10]] * 3
+
+model = ga(function=f, dimension=3, variable_type='real', variable_boundaries=varbound)
 
 model.run()
 
@@ -931,64 +940,65 @@ U can do it using this code:
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 
+subset_size = 20  # how many objects we can choose
 
-subset_size = 20 # how many objects we can choose
+objects_count = 100  # how many objects are in set
 
-objects_count = 100 # how many objects are in set
+my_set = np.random.random(objects_count) * 10 - 5  # set values
 
-my_set = np.random.random(objects_count)*10 - 5 # set values
 
 # minimized function
 def f(X):
-    return abs(np.mean(my_set[X==1]) - np.median(my_set[X==1]))
+    return abs(np.mean(my_set[X == 1]) - np.median(my_set[X == 1]))
+
 
 # initialize start generation and params
 
-N = 1000 # size of population
+N = 1000  # size of population
 start_generation = np.zeros((N, objects_count))
-indexes = np.arange(0, objects_count, dtype = np.int8) # indexes of variables
+indexes = np.arange(0, objects_count, dtype=np.int8)  # indexes of variables
 
 for i in range(N):
-    inds = np.random.choice(indexes, subset_size, replace = False)
-    start_generation[i, inds] = 1 
+    inds = np.random.choice(indexes, subset_size, replace=False)
+    start_generation[i, inds] = 1
 
 
 def my_crossover(parent_a, parent_b):
     a_indexes = set(indexes[parent_a == 1])
     b_indexes = set(indexes[parent_b == 1])
-    
-    intersect = a_indexes.intersection(b_indexes) # elements in both parents
-    a_only = a_indexes - intersect # elements only in 'a' parent
+
+    intersect = a_indexes.intersection(b_indexes)  # elements in both parents
+    a_only = a_indexes - intersect  # elements only in 'a' parent
     b_only = b_indexes - intersect
-    
-    child_inds = np.array(list(a_only) + list(b_only), dtype = np.int8)
-    np.random.shuffle(child_inds) # mix
-    
+
+    child_inds = np.array(list(a_only) + list(b_only), dtype=np.int8)
+    np.random.shuffle(child_inds)  # mix
+
     children = np.zeros((2, parent_a.size))
     if intersect:
         children[:, np.array(list(intersect))] = 1
-    children[0, child_inds[:int(child_inds.size/2)]] = 1
-    children[1, child_inds[int(child_inds.size/2):]] = 1
-    
-    return children[0,:], children[1,:]
-    
+    children[0, child_inds[:int(child_inds.size / 2)]] = 1
+    children[1, child_inds[int(child_inds.size / 2):]] = 1
 
-model = ga(function=f, 
-           dimension=objects_count, 
+    return children[0, :], children[1, :]
+
+
+model = ga(function=f,
+           dimension=objects_count,
            variable_type='bool',
            algorithm_parameters={
-                       'max_num_iteration': 500,
-                       'mutation_probability': 0, # no mutation, just crossover
-                       'elit_ratio': 0.05,
-                       'parents_portion': 0.3,
-                       'crossover_type': my_crossover,
-                       'max_iteration_without_improv': 20
-               }
+               'max_num_iteration': 500,
+               'mutation_probability': 0,  # no mutation, just crossover
+               'elit_ratio': 0.05,
+               'parents_portion': 0.3,
+               'crossover_type': my_crossover,
+               'max_iteration_without_improv': 20
+           }
            )
 
-model.run(no_plot = False, start_generation=(start_generation, None))
+model.run(no_plot=False, start_generation=(start_generation, None))
 ```
 
 # U should know these features
@@ -1105,44 +1115,42 @@ import matplotlib.pyplot as plt
 
 from DiscreteHillClimbing import Hill_Climbing_descent
 
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 from geneticalgorithm2 import Population_initializer
 
 
 def f(arr):
-    arr2 = arr/25
-    return -np.sum(arr2*np.sin(np.sqrt(np.abs(arr2))))**5 + np.sum(np.abs(arr2))**2
-
-iterations = 100    
-    
-varbound = [[-100, 100]]*15
-
-available_values = [np.arange(-100, 101)]*15
+    arr2 = arr / 25
+    return -np.sum(arr2 * np.sin(np.sqrt(np.abs(arr2)))) ** 5 + np.sum(np.abs(arr2)) ** 2
 
 
-my_local_optimizer = lambda arr, score: Hill_Climbing_descent(function = f, available_predictors_values=available_values, max_function_evals=50, start_solution=arr )
+iterations = 100
 
+varbound = [[-100, 100]] * 15
 
-model = ga(function=f, dimension=varbound.shape[0], 
-           variable_type='int', 
-           variable_boundaries = varbound,
+available_values = [np.arange(-100, 101)] * 15
+
+my_local_optimizer = lambda arr, score: Hill_Climbing_descent(function=f, available_predictors_values=available_values,
+                                                              max_function_evals=50, start_solution=arr)
+
+model = ga(function=f, dimension=varbound.shape[0],
+           variable_type='int',
+           variable_boundaries=varbound,
            algorithm_parameters={
                'max_num_iteration': iterations,
                'population_size': 400
-               })
-
+           })
 
 for time in ('before_select', 'after_select', 'never'):
-    model.run(no_plot = True,
-                  population_initializer = Population_initializer(
-                      select_best_of = 3,
-                      local_optimization_step = time,
-                      local_optimizer = my_local_optimizer
-                      )
-                  )
+    model.run(no_plot=True,
+              population_initializer=Population_initializer(
+                  select_best_of=3,
+                  local_optimization_step=time,
+                  local_optimizer=my_local_optimizer
+              )
+              )
 
-    plt.plot(model.report, label = f"local optimization time = '{time}'")
-
+    plt.plot(model.report, label=f"local optimization time = '{time}'")
 
 plt.xlabel('Generation')
 plt.ylabel('Minimized function (40 simulations average)')
@@ -1201,21 +1209,23 @@ After creating `model` but before running `run()` u need to append ur logic to `
 ```python
 import numpy as np
 
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 from geneticalgorithm2 import plot_several_lines
 
+
 def f(X):
-    return 50*np.sum(X) - np.sum(np.sqrt(X) * np.sin(X))
+    return 50 * np.sum(X) - np.sum(np.sqrt(X) * np.sin(X))
+
 
 dim = 25
-varbound = [[0 ,10]]*dim
+varbound = [[0, 10]] * dim
 
 model = ga(function=f, dimension=dim,
            variable_type='real', variable_boundaries=varbound,
            algorithm_parameters={
                'max_num_iteration': 600
            }
-)
+           )
 
 # here model exists and has checked_reports field
 # now u can append any functions to report
@@ -1229,11 +1239,11 @@ model.checked_reports.extend(
 )
 
 # run optimization process
-model.run(no_plot = False)
+model.run(no_plot=False)
 
 # now u have not only model.report but model.report_25 and so on
 
-#plot reports
+# plot reports
 names = [name for name, _ in model.checked_reports[::-1]]
 plot_several_lines(
     lines=[getattr(model, name) for name in names],
@@ -1651,18 +1661,21 @@ There are 2 ways to plot of scores of population:
 * use `plot_generation_scores(self, title = 'Last generation scores', save_as = None)` method of `ga` object for plotting scores of last generation (yes, it's wrapper of previous function)
 
 Let's check example:
+
 ```python
 import numpy as np
 
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 
-from geneticalgorithm2 import plot_pop_scores # for plotting scores without ga object
+from geneticalgorithm2 import plot_pop_scores  # for plotting scores without ga object
+
 
 def f(X):
-    return 50*np.sum(X) - np.sum(np.sqrt(X)*np.sin(X))
-    
+    return 50 * np.sum(X) - np.sum(np.sqrt(X) * np.sin(X))
+
+
 dim = 25
-varbound = [[0,10]]*dim
+varbound = [[0, 10]] * dim
 
 # create start population
 start_pop = np.random.uniform(0, 10, (50, dim))
@@ -1670,21 +1683,20 @@ start_pop = np.random.uniform(0, 10, (50, dim))
 start_scores = np.array([f(start_pop[i]) for i in range(start_pop.shape[0])])
 
 # plot start scores using plot_pop_scores function
-plot_pop_scores(start_scores, title = 'Population scores before beginning of searching', save_as= 'plot_scores_start.png')
-
+plot_pop_scores(start_scores, title='Population scores before beginning of searching', save_as='plot_scores_start.png')
 
 model = ga(function=f, dimension=dim, variable_type='real', variable_boundaries=varbound)
 # run optimization process
-model.run(no_plot = True,
+model.run(no_plot=True,
           start_generation={
               'variables': start_pop,
               'scores': start_scores
-              })
+          })
 # plot and save optimization process plot
-model.plot_results(save_as = 'plot_scores_process.png')
+model.plot_results(save_as='plot_scores_process.png')
 
 # plot scores of last population
-model.plot_generation_scores(title = 'Population scores after ending of searching', save_as= 'plot_scores_end.png')
+model.plot_generation_scores(title='Population scores after ending of searching', save_as='plot_scores_end.png')
 ```
 ![](tests/output/plot_scores_start.png)
 ![](tests/output/plot_scores_process.png)
@@ -1729,7 +1741,8 @@ For example:
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
+
 
 def f(X):
     import math
@@ -1738,34 +1751,36 @@ def f(X):
     c = X[2]
     s = 0
     for i in range(10000):
-        s += math.sin(a*i) + math.sin(b*i) + math.cos(c*i)
+        s += math.sin(a * i) + math.sin(b * i) + math.cos(c * i)
 
     return s
- 
+
 
 algorithm_param = {'max_num_iteration': 50,
-                   'population_size':100,
-                   'mutation_probability':0.1,
+                   'population_size': 100,
+                   'mutation_probability': 0.1,
                    'elit_ratio': 0.01,
                    'parents_portion': 0.3,
-                   'crossover_type':'uniform',
+                   'crossover_type': 'uniform',
                    'mutation_type': 'uniform_by_center',
                    'selection_type': 'roulette',
-                   'max_iteration_without_improv':None}   
-    
-varbound = np.array([[-10,10]]*3)
+                   'max_iteration_without_improv': None}
 
-model = ga(function=f, dimension=3, 
-    variable_type='real',           
-    variable_boundaries=varbound, 
-    algorithm_parameters = algorithm_param)
+varbound = np.array([[-10, 10]] * 3)
+
+model = ga(function=f, dimension=3,
+           variable_type='real',
+           variable_boundaries=varbound,
+           algorithm_parameters=algorithm_param)
 
 ########
 
-%time model.run()
+%time
+model.run()
 # Wall time: 1min 52s
 
-%time model.run(set_function= ga.set_function_multiprocess(f, n_jobs = 6))
+%time
+model.run(set_function=ga.set_function_multiprocess(f, n_jobs=6))
 # Wall time: 31.7 s
 ```
 
@@ -1775,56 +1790,52 @@ For this there is `start_generation` parameter in `run()` method. It's the dicti
 
 ```python
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
+
 
 def f(X):
     return np.sum(X)
-    
-dim = 6
-    
-varbound = [(0,10)]*dim
 
+
+dim = 6
+
+varbound = [(0, 10)] * dim
 
 algorithm_param = {'max_num_iteration': 500,
-                   'population_size':100,
-                   'mutation_probability':0.1,
+                   'population_size': 100,
+                   'mutation_probability': 0.1,
                    'elit_ratio': 0.01,
                    'parents_portion': 0.3,
-                   'crossover_type':'uniform',
-                   'max_iteration_without_improv':None}
+                   'crossover_type': 'uniform',
+                   'max_iteration_without_improv': None}
 
-model = ga(function=f, 
-           dimension=dim, 
-           variable_type='real', 
+model = ga(function=f,
+           dimension=dim,
+           variable_type='real',
            variable_boundaries=varbound,
-           algorithm_parameters = algorithm_param)
+           algorithm_parameters=algorithm_param)
 
 # start generation
 # as u see u can use any values been valid for ur function
-samples = np.random.uniform(0, 50, (300, dim)) # 300 is the new size of your generation
+samples = np.random.uniform(0, 50, (300, dim))  # 300 is the new size of your generation
 
-
-
-model.run(no_plot = False, start_generation={'variables':samples, 'scores': None}) 
+model.run(no_plot=False, start_generation={'variables': samples, 'scores': None})
 # it's not necessary to evaluate scores before
 # but u can do it if u have evaluated scores and don't wanna repeat calculations
 
 
-
 # from version 6.3.0 it's recommended to use this form
 from geneticalgorithm2 import Generation
-model.run(no_plot = False, start_generation=Generation(variables = samples, scores = None))
 
+model.run(no_plot=False, start_generation=Generation(variables=samples, scores=None))
 
 # from version 6.4.0 u also can use these forms
-model.run(no_plot = False, start_generation= samples)
-model.run(no_plot = False, start_generation= (samples, None))
-
+model.run(no_plot=False, start_generation=samples)
+model.run(no_plot=False, start_generation=(samples, None))
 
 # if u have scores array, u can put it too
 scores = np.array([f(sample) for sample in samples])
-model.run(no_plot = False, start_generation= (samples, scores))
-
+model.run(no_plot=False, start_generation=(samples, scores))
 
 ##
 ## after first run
@@ -1832,7 +1843,7 @@ model.run(no_plot = False, start_generation= (samples, scores))
 ##
 
 # okay, let's continue optimization using saved last generation
-model.run(no_plot = True, start_generation=model.output_dict['last_generation']) 
+model.run(no_plot=True, start_generation=model.output_dict['last_generation'])
 
 ##
 ## after second run
@@ -1846,32 +1857,30 @@ Also u can save and load populations using likely code:
 ```python
 import numpy as np
 
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 
 from OptimizationTestFunctions import Eggholder
 
+dim = 2 * 15
 
-dim = 2*15
-
-f =  Eggholder(dim)
+f = Eggholder(dim)
 
 xmin, xmax, ymin, ymax = f.bounds
-        
-varbound = np.array([[xmin, xmax], [ymin, ymax]]*15)
-    
+
+varbound = np.array([[xmin, xmax], [ymin, ymax]] * 15)
+
 model = ga(function=f,
-               dimension = dim,
-               variable_type='real',
-               variable_boundaries=varbound,
-               algorithm_parameters = {
-                       'max_num_iteration': 300,
-                       'population_size': 100
-                       })
+           dimension=dim,
+           variable_type='real',
+           variable_boundaries=varbound,
+           algorithm_parameters={
+               'max_num_iteration': 300,
+               'population_size': 100
+           })
 
 # first run and save last generation to file
 filename = "eggholder_lastgen.npz"
-model.run(save_last_generation_as = filename)
-
+model.run(save_last_generation_as=filename)
 
 # load start generation from file and run again (continue optimization)
 model.run(start_generation=filename)

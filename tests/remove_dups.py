@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 from OppOpPopInit import OppositionOperators
 
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 
 
 

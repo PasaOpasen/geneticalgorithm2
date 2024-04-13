@@ -1,7 +1,7 @@
 
 import numpy as np
 
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 from geneticalgorithm2 import plot_several_lines
 
 def f(X):

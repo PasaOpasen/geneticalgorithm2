@@ -7,7 +7,7 @@ sys.path.append('..')
 import numpy as np
 
 from OppOpPopInit import set_seed
-from geneticalgorithm2 import geneticalgorithm2 as ga, AlgorithmParams, plot_several_lines
+from geneticalgorithm2 import GeneticAlgorithm2 as ga, AlgorithmParams, plot_several_lines
 
 set_seed(1)
 

@@ -1,7 +1,12 @@
 
+from typing_extensions import TypeAlias
+
 from .classes import Generation, AlgorithmParams
 
-from .geneticalgorithm2 import geneticalgorithm2
+from .geneticalgorithm2 import GeneticAlgorithm2
+
+# to keep backward compatibility
+geneticalgorithm2: TypeAlias = GeneticAlgorithm2
 
 from .mutations import Mutations
 from .crossovers import Crossover

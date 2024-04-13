@@ -6,7 +6,7 @@ Created on Thu Nov 19 16:22:26 2020
 """
 
 import numpy as np
-from geneticalgorithm2 import geneticalgorithm2 as ga
+from geneticalgorithm2 import GeneticAlgorithm2 as ga
 
 def f(X):
     pen=0
