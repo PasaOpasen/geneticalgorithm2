@@ -6,3 +6,4 @@ ipython
 pytest
 wheel
 setuptools
+pdoc

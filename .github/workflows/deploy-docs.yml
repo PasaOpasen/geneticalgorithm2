@@ -30,10 +30,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -U pip setuptools wheel
-          pip install -e .
+          pip install -r requirements-dev.txt
 
       - name: Build docs
-        run: time meta/documentation.sh
+        run: bash meta/documentation.sh
 
       - name: Deploy docs
         env:
