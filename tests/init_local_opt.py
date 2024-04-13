@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from DiscreteHillClimbing import Hill_Climbing_descent
 
 from geneticalgorithm2 import GeneticAlgorithm2 as ga
-from geneticalgorithm2 import Population_initializer
+from geneticalgorithm2 import get_population_initializer
 
 
 def f(arr):
@@ -45,7 +45,7 @@ for time in ('before_select', 'after_select', 'never'):
     
 
     model.run(no_plot = True,
-                  population_initializer = Population_initializer(
+                  population_initializer = get_population_initializer(
                       select_best_of = 3,
                       local_optimization_step = time,
                       local_optimizer = my_local_optimizer

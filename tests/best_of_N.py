@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from geneticalgorithm2 import GeneticAlgorithm2 as ga
-from geneticalgorithm2 import Population_initializer
+from geneticalgorithm2 import get_population_initializer
 
 
 def f(X):
@@ -39,7 +39,7 @@ for best_of in (1, 3, 5):
     
     for _ in range(40):
         model.run(no_plot = True,
-                  population_initializer=Population_initializer(select_best_of = best_of)
+                  population_initializer=get_population_initializer(select_best_of = best_of)
                   )
         average_report += np.array(model.report)
    

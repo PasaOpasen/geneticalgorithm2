@@ -16,7 +16,7 @@ from OppOpPopInit import OppositionOperators
 from OptimizationTestFunctions import Ackley
 
 from geneticalgorithm2 import GeneticAlgorithm2 as ga
-from geneticalgorithm2 import Population_initializer
+from geneticalgorithm2 import get_population_initializer
 
 
 dim = 15
@@ -62,7 +62,7 @@ for opp, name in zip(oppositors, names):
     
     for _ in range(40):
         model.run(no_plot = True,
-                  population_initializer=Population_initializer(select_best_of = 3),
+                  population_initializer=get_population_initializer(select_best_of = 3),
                   init_oppositors=opp
                   )
         average_report += np.array(model.report)

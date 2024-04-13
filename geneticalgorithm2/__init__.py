@@ -21,7 +21,10 @@ from .mutations import Mutations
 from .crossovers import Crossover
 from .selections import Selection
 
-from .initializer import Population_initializer
+from .population_initializer import get_population_initializer
+
+# to keep backward compatibility
+Population_initializer: TypeAlias = get_population_initializer
 
 from .callbacks import Callbacks, Actions, ActionConditions, MiddleCallbacks
 

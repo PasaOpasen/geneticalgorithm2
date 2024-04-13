@@ -341,7 +341,7 @@ from geneticalgorithm2 import Generation, AlgorithmParams  # classes for comfort
 
 from geneticalgorithm2 import Crossover, Mutations, Selection  # classes for specific mutation and crossover behavior
 
-from geneticalgorithm2 import Population_initializer  # for creating better start population
+from geneticalgorithm2 import get_population_initializer  # for creating better start population
 
 from geneticalgorithm2 import np_lru_cache  # for cache function (if u want)
 
@@ -1125,7 +1125,7 @@ import matplotlib.pyplot as plt
 from DiscreteHillClimbing import Hill_Climbing_descent
 
 from geneticalgorithm2 import GeneticAlgorithm2 as ga
-from geneticalgorithm2 import Population_initializer
+from geneticalgorithm2 import get_population_initializer
 
 
 def f(arr):
@@ -1152,7 +1152,7 @@ model = ga(function=f, dimension=varbound.shape[0],
 
 for time in ('before_select', 'after_select', 'never'):
     model.run(no_plot=True,
-              population_initializer=Population_initializer(
+              population_initializer=get_population_initializer(
                   select_best_of=3,
                   local_optimization_step=time,
                   local_optimizer=my_local_optimizer

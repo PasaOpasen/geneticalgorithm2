@@ -20,7 +20,7 @@ from .utils.aliases import array1D, array2D
 
 from .classes import AlgorithmParams, Generation, MiddleCallbackData, GAResult, GenerationConvertible
 
-from .initializer import Population_initializer
+from .population_initializer import get_population_initializer
 from .utils.plotting import plot_pop_scores, plot_several_lines
 
 from .utils.funcs import can_be_prob, is_numpy, is_current_gen_number, fast_min, random_indexes_pair
@@ -437,7 +437,7 @@ class GeneticAlgorithm2:
 
         population_initializer: Tuple[
             int, Callable[[array2D, array1D], Tuple[array2D, array1D]]
-        ] = Population_initializer(select_best_of=1, local_optimization_step='never', local_optimizer=None),
+        ] = get_population_initializer(select_best_of=1, local_optimization_step='never', local_optimizer=None),
 
         stop_when_reached: Optional[float] = None,
         callbacks: Optional[Sequence[CallbackFunc]] = None,
