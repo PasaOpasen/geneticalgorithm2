@@ -130,6 +130,10 @@ class GeneticAlgorithm2:
         # self.discrete_mutation: Callable[[int, int, int], int] = None
         # self.selection: Callable[[np.ndarray, int], np.ndarray] = None
 
+        self.revolution_oppositor = None
+        self.dup_oppositor = None
+        self.creator = None
+        self.init_oppositors = None
         self.f: Callable[[array1D], float] = None
         self.funtimeout: float = None
         self.set_function: Callable[[np.ndarray], np.ndarray] = None
@@ -563,11 +567,7 @@ class GeneticAlgorithm2:
         pop: array2D = None
         scores: array1D = None
 
-        #
-        #
-        # callbacks part
-        #
-        #
+        #region CALLBACKS
 
         def get_data():
             """
@@ -652,7 +652,7 @@ class GeneticAlgorithm2:
                 if flag:
                     set_data(data)  # update global date if there was real callback step
 
-        ############################################################
+        #endregion
 
         start_time = time.time()
         time_is_done = (
@@ -661,10 +661,10 @@ class GeneticAlgorithm2:
             else (lambda: int(time.time() - start_time) >= time_limit_secs)
         )
 
-        ############################################################# 
-        # Initial Population
         self.set_function = set_function or GeneticAlgorithm2.default_set_function(self.f)
 
+        #region Initial population, duplicates filter, revolutionary
+        
         pop_coef, initializer_func = population_initializer
         
         # population creator by random or with oppositions
@@ -810,6 +810,8 @@ class GeneticAlgorithm2:
 
                 args = args[:scores.size]
                 return combined[args], combined_scores[args]
+
+        #enregion
 
         #
         #

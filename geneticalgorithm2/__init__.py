@@ -5,6 +5,7 @@ An implementation of elitist genetic algorithm for solving problems with
 continuous, integers, or mixed variables.
 
 repo path:       https://github.com/PasaOpasen/geneticalgorithm2
+
 code docs path:  https://pasaopasen.github.io/geneticalgorithm2/
 """
 
