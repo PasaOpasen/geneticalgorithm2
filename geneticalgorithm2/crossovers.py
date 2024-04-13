@@ -4,7 +4,7 @@ from typing import Callable, Tuple, Dict
 import random
 import numpy as np
 
-from .aliases import TypeAlias, array1D
+from .utils.aliases import TypeAlias, array1D
 
 CrossoverFunc: TypeAlias = Callable[[array1D, array1D], Tuple[array1D, array1D]]
 

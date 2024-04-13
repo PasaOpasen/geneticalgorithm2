@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from .aliases import PathLike
+from geneticalgorithm2.utils.aliases import PathLike
 
 
 def _mkdir(path: Path):

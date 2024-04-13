@@ -14,10 +14,10 @@ from .selections import Selection
 
 from .initializer import Population_initializer
 
-from .cache import np_lru_cache
 from .callbacks import Callbacks, Actions, ActionConditions, MiddleCallbacks
 
-from .plotting_tools import plot_pop_scores, plot_several_lines
+from .utils.cache import np_lru_cache
+from .utils.plotting import plot_pop_scores, plot_several_lines
 
 
 

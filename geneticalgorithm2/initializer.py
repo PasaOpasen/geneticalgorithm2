@@ -3,7 +3,7 @@ from typing import Callable, Optional, Tuple, Literal
 
 import numpy as np
 
-from .aliases import TypeAlias, array1D, array2D
+from .utils.aliases import TypeAlias, array1D, array2D
 
 
 LOCAL_OPT_STEPS: TypeAlias = Literal['before_select', 'after_select', 'never']

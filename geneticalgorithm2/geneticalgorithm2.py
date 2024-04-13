@@ -16,14 +16,14 @@ import numpy as np
 
 #region INTERNAL IMPORTS
 
-from .aliases import array1D, array2D
+from .utils.aliases import array1D, array2D
 
 from .classes import AlgorithmParams, Generation, MiddleCallbackData, GAResult, GenerationConvertible
 
 from .initializer import Population_initializer
-from .plotting_tools import plot_pop_scores, plot_several_lines
+from .utils.plotting import plot_pop_scores, plot_several_lines
 
-from .utils import can_be_prob, is_numpy, is_current_gen_number, fast_min, random_indexes_pair
+from .utils.funcs import can_be_prob, is_numpy, is_current_gen_number, fast_min, random_indexes_pair
 
 from .callbacks import MiddleCallbackFunc, CallbackFunc
 

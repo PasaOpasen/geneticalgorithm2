@@ -5,7 +5,7 @@ import math
 import random
 import numpy as np
 
-from .aliases import array1D, TypeAlias
+from .utils.aliases import array1D, TypeAlias
 
 SelectionFunc: TypeAlias = Callable[[array1D, int], array1D]
 

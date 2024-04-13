@@ -5,9 +5,9 @@ import random
 import numpy as np
 
 
-from .utils import fast_min, fast_max
+from .utils.aliases import TypeAlias
+from .utils.funcs import fast_min, fast_max
 
-from .aliases import TypeAlias
 
 MutationFloatFunc: TypeAlias = Callable[[float, float, float], float]
 MutationIntFunc: TypeAlias = Callable[[int, int, int], int]

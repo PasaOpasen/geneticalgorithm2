@@ -8,12 +8,12 @@ import numpy as np
 
 from OppOpPopInit import OppositionOperators, SampleInitializers
 
-from .aliases import TypeAlias, array1D, array2D, PathLike
-from .files import mkdir_of_file, mkdir
+from .utils.aliases import TypeAlias, array1D, array2D, PathLike
+from .utils.files import mkdir
+from .utils.funcs import union_to_matrix, fast_max
 
 from .classes import MiddleCallbackData, Generation
 
-from .utils import union_to_matrix, fast_max
 
 from .crossovers import CrossoverFunc
 from .selections import SelectionFunc
@@ -270,7 +270,7 @@ class Actions:
         plots population scores
         needs 2 functions like data->str for title and file name
         """
-        from .plotting_tools import plot_pop_scores
+        from .utils.plotting import plot_pop_scores
 
         use_save_as = (lambda data: None) if save_as_name_pattern is None else save_as_name_pattern
 

@@ -3,7 +3,7 @@ from typing import Optional, Sequence
 
 import numpy as np
 
-from .aliases import PathLike
+from geneticalgorithm2.utils.aliases import PathLike
 from .files import mkdir_of_file
 
 
@@ -51,6 +51,7 @@ def plot_several_lines(
 
     plt.show()
 
+
 def plot_pop_scores(scores: Sequence[float], title: str = 'Population scores', save_as: Optional[str] = None):
     """
     plots scores (numeric values) as sorted bars
@@ -76,8 +77,6 @@ def plot_pop_scores(scores: Sequence[float], title: str = 'Population scores', s
                         xytext=(0, 3),  # 3 points vertical offset
                         textcoords="offset points",
                         ha='center', va='bottom', fontsize=14, fontweight='bold')
-    
-
 
     cols = np.zeros(len(sc))
     cols[-1] = 1
@@ -96,7 +95,6 @@ def plot_pop_scores(scores: Sequence[float], title: str = 'Population scores', s
     #ax.set_ylim([0, max(subdict.values())*1.2])
     #fig.suptitle(title, fontsize=15, fontweight='bold')
 
-    
     fig.tight_layout()
     
     if save_as is not None:

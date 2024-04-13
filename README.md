@@ -162,6 +162,7 @@ pip install geneticalgorithm2[full]
 - recreate the repository without excess heavy files materials 
 - host the [code documentation](https://pasaopasen.github.io/geneticalgorithm2/)
 - rename `geneticalgorithm2` class to `GeneticAlgorithm2`
+- substantial package architecture refactor
 
 ## 6.8.7 minor update
 

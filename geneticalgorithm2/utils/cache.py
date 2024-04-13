@@ -7,7 +7,7 @@ from functools import lru_cache, wraps
 
 #from fastcache import clru_cache
 
-from .aliases import array1D
+from geneticalgorithm2.utils.aliases import array1D
 
 
 def np_lru_cache(*args, **kwargs):

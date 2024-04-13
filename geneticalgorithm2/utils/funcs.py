@@ -1,12 +1,10 @@
 
 from typing import Optional, Any, Tuple
 
-from pathlib import Path
-
 import random
 import numpy as np
 
-from .aliases import array1D, array2D
+from geneticalgorithm2.utils.aliases import array1D, array2D
 
 
 def fast_min(a, b):

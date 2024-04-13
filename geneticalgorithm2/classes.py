@@ -7,14 +7,14 @@ import warnings
 
 import numpy as np
 
-from .aliases import array1D, array2D, TypeAlias, PathLike
-from .files import mkdir_of_file
+from .utils.aliases import array1D, array2D, TypeAlias, PathLike
+from .utils.files import mkdir_of_file
+from .utils.funcs import can_be_prob, union_to_matrix
 
 from .crossovers import Crossover, CrossoverFunc
 from .mutations import Mutations, MutationIntFunc, MutationFloatFunc
 from .selections import Selection, SelectionFunc
 
-from .utils import can_be_prob, union_to_matrix
 
 
 class DictLikeGetSet:
