@@ -37,19 +37,13 @@ VARIABLE_TYPE: TypeAlias = Literal['int', 'real', 'bool']
 
 
 class GeneticAlgorithm2:
-    
     """
-    Genetic Algorithm (Elitist version) for Python3.8+
-    
-    An implementation of elitist genetic algorithm for solving problems with
-    continuous, integers, or mixed variables.
-    
-    repo path:       https://github.com/PasaOpasen/geneticalgorithm2
-    code docs path:  https://pasaopasen.github.io/geneticalgorithm2/
+    Genetic algorithm optimization process
     """
     
     default_params = AlgorithmParams()
     PROGRESS_BAR_LEN = 20
+    """max count of symbols in the progress bar"""
 
     @property
     def output_dict(self):

@@ -8,68 +8,80 @@ import numpy as np
 from .utils.aliases import array1D, TypeAlias
 
 SelectionFunc: TypeAlias = Callable[[array1D, int], array1D]
+"""
+Function (scores, count to select) -> indexes of selected
+"""
 
+
+#region UTILS
+
+def inverse_scores(scores: array1D) -> array1D:
+    """
+    inverses scores (min val goes to max)
+    """
+    minobj = scores[0]
+    normobj = scores - minobj if minobj < 0 else scores
+
+    return (np.amax(normobj) + 1) - normobj
+
+
+def roulette(scores: array1D, parents_count: int) -> array1D:
+    """simplest roulette selector for which the highest score means more preferred"""
+
+    sum_normobj = np.sum(scores)
+    prob = scores / sum_normobj
+    cumprob = np.cumsum(prob)
+
+    parents_indexes = np.array(
+        [
+            index if index < cumprob.size else np.random.randint(0, index - 1)
+            for index in (
+                np.searchsorted(cumprob, np.random.random())
+                for _ in range(parents_count)
+            )
+        ]
+    )
+
+    return parents_indexes
+
+
+#endregion
 
 class Selection:
+    """
+    Selections functions static class
+    """
 
     @staticmethod
     def selections_dict() -> Dict[str, SelectionFunc]:
         return {
-            'fully_random': Selection.fully_random(),
-            'roulette': Selection.roulette(),
-            'stochastic': Selection.stochastic(),
-            'sigma_scaling': Selection.sigma_scaling(),
-            'ranking': Selection.ranking(),
-            'linear_ranking': Selection.linear_ranking(),
-            'tournament': Selection.tournament(),
+            n: getattr(Selection, n)()
+            for n in (
+                'fully_random',
+                'roulette',
+                'stochastic',
+                'sigma_scaling',
+                'ranking',
+                'linear_ranking',
+                'tournament',
+            )
         }
 
     @staticmethod
-    def __inverse_scores(scores: array1D) -> array1D:
-        """
-        inverse scores (min val goes to max)
-        """
-        minobj = scores[0]
-        normobj = scores - minobj if minobj < 0 else scores
-                
-        return (np.amax(normobj) + 1) - normobj
-
-    @staticmethod
     def fully_random() -> SelectionFunc:
+        """returns the selector of fully random parents (for tests purposes)"""
         
         def func(scores: array1D, parents_count: int):
             indexes = np.arange(parents_count)
-            return np.random.choice(indexes, parents_count, replace = False)
+            return np.random.choice(indexes, parents_count, replace=False)
         
         return func
-
-    @staticmethod
-    def __roulette(scores: array1D, parents_count: int) -> array1D:
-        
-        sum_normobj = np.sum(scores)
-        prob = scores/sum_normobj
-        cumprob = np.cumsum(prob)            
-            
-        parents_indexes = np.empty(parents_count)
-            
-        # it can be vectorized
-        for k in range(parents_count):
-            index = np.searchsorted(cumprob, np.random.random())
-            if index < cumprob.size:
-                parents_indexes[k] = index
-            else:
-                parents_indexes[k] = np.random.randint(0, index - 1)
-            
-        return parents_indexes
 
     @staticmethod
     def roulette() -> SelectionFunc:
         
         def func(scores: array1D, parents_count: int):
-
-            normobj = Selection.__inverse_scores(scores)
-
-            return Selection.__roulette(normobj, parents_count)
+            return roulette(inverse_scores(scores), parents_count)
         
         return func
 
@@ -77,7 +89,7 @@ class Selection:
     def stochastic() -> SelectionFunc:
         
         def func(scores: np.ndarray, parents_count: int):
-            f = Selection.__inverse_scores(scores)
+            f = inverse_scores(scores)
             
             fN: float = 1.0 / parents_count
             k: int = 0
@@ -105,7 +117,7 @@ class Selection:
     def sigma_scaling(epsilon: float = 0.01, is_noisy: bool = False) -> SelectionFunc:
         
         def func(scores: array1D, parents_count):
-            f = Selection.__inverse_scores(scores)
+            f = inverse_scores(scores)
             
             sigma = np.std(f, ddof = 1) if is_noisy else np.std(f)
             average = np.mean(f)
@@ -123,21 +135,20 @@ class Selection:
     def ranking() -> SelectionFunc:
         
         def func(scores: array1D, parents_count: int):
-            return Selection.__roulette(1 + np.arange(parents_count)[::-1], parents_count)
+            return roulette(1 + np.arange(parents_count)[::-1], parents_count)
         
         return func
 
     @staticmethod
     def linear_ranking(selection_pressure: float = 1.5) -> SelectionFunc:
         
-        assert (selection_pressure > 1 and selection_pressure < 2), f"selection_pressure should be in (1, 2), but got {selection_pressure}"
+        assert 1 <= selection_pressure <= 2, f"selection_pressure should be in (1, 2), but got {selection_pressure}"
         
         def func(scores: array1D, parents_count: int):
             tmp = parents_count * (parents_count-1)
             alpha = (2 * parents_count - selection_pressure * (parents_count + 1)) / tmp
             beta = 2 * (selection_pressure - 1) / tmp
-            
-            
+
             a = -2 * alpha - beta
             b = (2 * alpha + beta) ** 2
             c = 8 * beta
@@ -145,9 +156,13 @@ class Selection:
             
             indexes = np.arange(parents_count)
             
-            return np.array([indexes[-round((a + math.sqrt(b + c*random.random()))/d)] for _ in range(parents_count)])
-            
-        
+            return np.array(
+                [
+                    indexes[-round((a + math.sqrt(b + c * random.random())) / d)]
+                    for _ in range(parents_count)
+                ]
+            )
+
         return func
 
     @staticmethod
@@ -163,11 +178,10 @@ class Selection:
             
             return np.array(
                 [
-                    np.min(np.random.choice(indexes, tau, replace = False)) 
+                    np.min(np.random.choice(indexes, tau, replace=False))
                     for _ in range(parents_count)
                 ]
             )
-            
         
         return func
     

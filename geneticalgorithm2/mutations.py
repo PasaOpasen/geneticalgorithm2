@@ -12,17 +12,26 @@ from .utils.funcs import fast_min, fast_max
 MutationFloatFunc: TypeAlias = Callable[[float, float, float], float]
 MutationIntFunc: TypeAlias = Callable[[int, int, int], int]
 MutationFunc: TypeAlias = Union[MutationIntFunc, MutationFloatFunc]
+"""
+Function (x, left, right) -> value
+
+Which mutates x to value according to bounds (left, right)
+"""
 
 
 class Mutations:
+    """Mutations functions static class"""
 
     @staticmethod
     def mutations_dict() -> Dict[str, MutationFloatFunc]:
         return {
-            'uniform_by_x': Mutations.uniform_by_x(),
-            'uniform_by_center': Mutations.uniform_by_center(),
-            'gauss_by_center': Mutations.gauss_by_center(),
-            'gauss_by_x': Mutations.gauss_by_x(),
+            n: getattr(Mutations, n)()
+            for n in (
+                'uniform_by_x',
+                'uniform_by_center',
+                'gauss_by_center',
+                'gauss_by_x',
+            )
         }
 
     @staticmethod
@@ -30,7 +39,6 @@ class Mutations:
         return {
             'uniform_discrete': Mutations.uniform_discrete()
         }
-
 
     @staticmethod
     def uniform_by_x() -> MutationFloatFunc:

@@ -7,6 +7,9 @@ import numpy as np
 from .utils.aliases import TypeAlias, array1D
 
 CrossoverFunc: TypeAlias = Callable[[array1D, array1D], Tuple[array1D, array1D]]
+"""
+Function (parent1, parent2) -> (child1, child2)
+"""
 
 
 def get_copies(x: array1D, y: array1D) -> Tuple[array1D, array1D]:
@@ -14,15 +17,19 @@ def get_copies(x: array1D, y: array1D) -> Tuple[array1D, array1D]:
 
 
 class Crossover:
+    """Crossover functions static class"""
 
     @staticmethod
     def crossovers_dict() -> Dict[str, CrossoverFunc]:
         return {
-            'one_point': Crossover.one_point(),
-            'two_point': Crossover.two_point(),
-            'uniform': Crossover.uniform(),
-            'segment': Crossover.segment(),
-            'shuffle': Crossover.shuffle(),
+            n: getattr(Crossover, n)()
+            for n in (
+                'one_point',
+                'two_point',
+                'uniform',
+                'segment',
+                'shuffle',
+            )
         }
     
     @staticmethod
@@ -92,7 +99,7 @@ class Crossover:
             
             ofs1, ofs2 = get_copies(x, y)
             
-            index = np.random.choice(np.arange(0, x.size), x.size, replace = False)
+            index = np.random.choice(np.arange(0, x.size), x.size, replace=False)
             
             ran = np.random.randint(0, x.size)
             
