@@ -3,6 +3,9 @@ https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/aliases.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/cache.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/callbacks.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/callbacks/data.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/callbacks/middle.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/callbacks/simple.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/classes.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/crossovers.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/data_types.html
