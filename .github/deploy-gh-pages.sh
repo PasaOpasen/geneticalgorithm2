@@ -9,7 +9,7 @@ fi
 [ "$GH_PASSWORD" ] || exit 12
 
 sitemap() {
-    WEBSITE='https://pdoc3.github.io/pdoc'
+    WEBSITE='https://pasaopasen.github.io/geneticalgorithm2'
     find -name '*.html' |
         sed "s,^\.,$WEBSITE," |
         sed 's/index.html$//' |
@@ -21,8 +21,8 @@ sitemap() {
 head=$(git rev-parse HEAD)
 
 git clone -b gh-pages "https://pasaopasen:$GH_PASSWORD@github.com/$GITHUB_REPOSITORY.git" gh-pages
-mkdir -p gh-pages/doc
-cp -R doc/build/* gh-pages/doc/
+mkdir -p gh-pages/docs
+cp -R documentation/* gh-pages/docs/
 cd gh-pages
 sitemap
 git add *
