@@ -10,6 +10,7 @@ https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/classes.ht
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/crossovers.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/data_types.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/data_types/algorithm_params.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/data_types/aliases.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/data_types/base.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/data_types/callback.html
 https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2/data_types/generation.html
