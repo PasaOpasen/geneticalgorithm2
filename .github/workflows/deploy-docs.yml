@@ -38,4 +38,4 @@ jobs:
       - name: Deploy docs
         env:
           GH_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-        run: .github/deploy-gh-pages.sh
+        run: bash .github/deploy-gh-pages.sh
