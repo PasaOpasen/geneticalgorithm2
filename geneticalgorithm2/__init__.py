@@ -1,7 +1,3 @@
-
-from typing_extensions import TypeAlias
-
-from .classes import Generation, AlgorithmParams
 """
 Genetic Algorithm (Elitist version) for Python3.8+
 
@@ -11,6 +7,12 @@ continuous, integers, or mixed variables.
 repo path:       https://github.com/PasaOpasen/geneticalgorithm2
 code docs path:  https://pasaopasen.github.io/geneticalgorithm2/
 """
+
+
+from typing_extensions import TypeAlias
+
+from .data_types.algorithm_params import AlgorithmParams
+from .data_types.generation import Generation
 
 from .geneticalgorithm2 import GeneticAlgorithm2
 

@@ -12,13 +12,14 @@ from .utils.aliases import TypeAlias, array1D, array2D, PathLike
 from .utils.files import mkdir
 from .utils.funcs import union_to_matrix, fast_max
 
-from .classes import MiddleCallbackData, Generation
-
+from .data_types.generation import Generation
+from .data_types.callback import MiddleCallbackData
 
 from .crossovers import CrossoverFunc
 from .selections import SelectionFunc
 from .mutations import MutationFunc
 
+# TODO refactor
 
 CallbackFunc: TypeAlias = Callable[[int, List[float], array2D, array1D], None]
 MiddleCallbackActionFunc: TypeAlias = Callable[[MiddleCallbackData], MiddleCallbackData]

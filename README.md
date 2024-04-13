@@ -292,7 +292,7 @@ pip install geneticalgorithm2[full]
 - `AlgorithmParams` class for base GA algorithm parameters (instead of dictionary)
 - `Generation` class for saving/loading/returning generation (instead of dictionary)
 
-All that classes are collected [in file](geneticalgorithm2/classes.py). To maintain backward compatibility, `AlgorithmParams` and `Generation` classes have dictionary-like interface for getting fields: u can use `object.field` or `object['field']` notations.
+All that classes are collected [in file](geneticalgorithm2/data_types/classes.py). To maintain backward compatibility, `AlgorithmParams` and `Generation` classes have dictionary-like interface for getting fields: u can use `object.field` or `object['field']` notations.
 
 
 # Working process

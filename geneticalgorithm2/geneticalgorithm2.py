@@ -18,7 +18,10 @@ import numpy as np
 
 from .utils.aliases import array1D, array2D
 
-from .classes import AlgorithmParams, Generation, MiddleCallbackData, GAResult, GenerationConvertible
+from .data_types.algorithm_params import AlgorithmParams
+from .data_types.generation import GenerationConvertible, Generation
+from .data_types.result import GAResult
+from .data_types.callback import MiddleCallbackData
 
 from .population_initializer import get_population_initializer
 from .utils.plotting import plot_pop_scores, plot_several_lines
@@ -147,7 +150,7 @@ class GeneticAlgorithm2:
         if not isinstance(algorithm_parameters, AlgorithmParams):
             algorithm_parameters = AlgorithmParams.from_dict(algorithm_parameters)
 
-        algorithm_parameters.check_if_valid()
+        algorithm_parameters.validate()
         self.param = algorithm_parameters
         self.crossover, self.real_mutation, self.discrete_mutation, self.selection = algorithm_parameters.get_CMS_funcs()
 
