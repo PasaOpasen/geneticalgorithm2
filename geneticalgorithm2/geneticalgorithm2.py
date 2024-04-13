@@ -39,12 +39,13 @@ VARIABLE_TYPE: TypeAlias = Literal['int', 'real', 'bool']
 class geneticalgorithm2:
     
     """
-    Genetic Algorithm (Elitist version) for Python
+    Genetic Algorithm (Elitist version) for Python3.8+
     
     An implementation of elitist genetic algorithm for solving problems with
     continuous, integers, or mixed variables.
     
-    repo path https://github.com/PasaOpasen/geneticalgorithm2
+    repo path:       https://github.com/PasaOpasen/geneticalgorithm2
+    code docs path:  https://pasaopasen.github.io/geneticalgorithm2/
     """
     
     default_params = AlgorithmParams()
@@ -53,12 +54,14 @@ class geneticalgorithm2:
     @property
     def output_dict(self):
         warnings.warn(
-            "'output_dict' is deprecated and will be removed at version 7 \n use 'result' instead"
+            "'output_dict' is deprecated and will be removed at version 7 \n"
+            "use 'result' instead"
         )
         return self.result
 
     @property
     def needs_mutation(self) -> bool:
+        """whether the mutation is required"""
         return self.prob_mut > 0 or self.prob_mut_discrete > 0
 
     #region INIT
@@ -103,7 +106,7 @@ class geneticalgorithm2:
             For example, when there is an infinite loop in the given function. `None` means disabling
 
             algorithm_parameters <Union[AlgorithmParams, Dict[str, Any]]>:
-                @ max_num_iteration <int> - stoping criteria of the genetic algorithm (GA)
+                @ max_num_iteration <int> - stopping criteria of the genetic algorithm (GA)
                 @ population_size <int>
                 @ mutation_probability <float in [0,1]>
                 @ elit_ratio <float in [0,1]>
