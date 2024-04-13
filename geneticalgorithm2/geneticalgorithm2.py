@@ -18,16 +18,17 @@ import numpy as np
 
 from .utils.aliases import array1D, array2D
 
+from .data_types.aliases import FunctionToMinimize, SetFunctionToMinimize
 from .data_types.algorithm_params import AlgorithmParams
 from .data_types.generation import GenerationConvertible, Generation
 from .data_types.result import GAResult
-from .callbacks.data import MiddleCallbackData
 
 from .population_initializer import get_population_initializer
 from .utils.plotting import plot_pop_scores, plot_several_lines
 
 from .utils.funcs import can_be_prob, is_numpy, is_current_gen_number, fast_min, random_indexes_pair
 
+from .callbacks.data import MiddleCallbackData
 from .callbacks import MiddleCallbackFunc, SimpleCallbackFunc
 
 #endregion
@@ -35,6 +36,12 @@ from .callbacks import MiddleCallbackFunc, SimpleCallbackFunc
 #region ALIASES
 
 VARIABLE_TYPE: TypeAlias = Literal['int', 'real', 'bool']
+"""
+the variable type for a given or all dimension, determines the values discretion:
+    real: double numbers
+    int: integer number only
+    bool: in the fact is integer with bounds [0, 1]
+"""
 
 #endregion
 
@@ -65,7 +72,7 @@ class GeneticAlgorithm2:
 
     def __init__(
         self,
-        function: Callable[[array1D], float],
+        function: FunctionToMinimize,
 
         dimension: int,
         variable_type: Union[VARIABLE_TYPE, Sequence[VARIABLE_TYPE]] = 'bool',
@@ -77,43 +84,37 @@ class GeneticAlgorithm2:
         algorithm_parameters: Union[AlgorithmParams, Dict[str, Any]] = default_params
     ):
         """
+        initializes the GA object and performs main checks
+
         Args:
-            function <Callable[[np.ndarray], float]> - the given objective function to be minimized
-            #NOTE: This implementation minimizes the given objective function.
-            (For maximization multiply function by a negative sign: the absolute
-            value of the output would be the actual objective function)
+            function: the given objective function to be minimized
+            dimension: the number of decision variables, the population samples dimention
 
-            dimension <integer> - the number of decision variables
+            variable_type: string means the variable type for all variables,
+                for mixed types use sequence of strings of type for each variable
 
-            variable_type <string> - 'bool' if all variables are Boolean;
-            'int' if all variables are integer; and 'real' if all variables are
-            real value or continuous. For mixed types use sequence of string of type for each variable
-
-            variable_boundaries <Optional[Union[np.ndarray, Sequence[Tuple[float, float]]]]> - Default None; leave it
-            None if variable_type is 'bool'; otherwise provide an array of tuples
-            of length two as boundaries for each variable;
-            the length of the array must be equal dimension. For example,
-            np.array([0,100],[0,200]) determines lower boundary 0 and upper boundary 100 for first
-            and upper boundary 200 for second variable where dimension is 2.
+            variable_boundaries: leave it None if variable_type is 'bool';
+                otherwise provide a sequence of tuples of length two as boundaries for each variable;
+                the length of the array must be equal dimension.
+                For example, ([0,100], [0,200]) determines
+                    lower boundary 0 and upper boundary 100 for first
+                    and upper boundary 200 for second variable
+                    and dimension must be 2.
 
             variable_type_mixed -- deprecated
 
-            function_timeout <float> - if the given function does not provide
-            output before function_timeout (unit is seconds) the algorithm raise error.
-            For example, when there is an infinite loop in the given function. `None` means disabling
+            function_timeout: if the given function does not provide
+                output before function_timeout (unit is seconds) the algorithm raises error.
+                For example, when there is an infinite loop in the given function.
+                `None` means disabling
 
-            algorithm_parameters <Union[AlgorithmParams, Dict[str, Any]]>:
-                @ max_num_iteration <int> - stopping criteria of the genetic algorithm (GA)
-                @ population_size <int>
-                @ mutation_probability <float in [0,1]>
-                @ elit_ratio <float in [0,1]>
-                @ crossover_probability <float in [0,1]>
-                @ parents_portion <float in [0,1]>
-                @ crossover_type <string/function> - Default is 'uniform'; 'one_point' or 'two_point' (not only) are other options
-                @ mutation_type <string/function> - Default is 'uniform_by_x'; see GitHub to check other options
-                @ mutation_discrete_type <string/function> - mutation type for discrete variables
-                @ selection_type <string/function> - Default is 'roulette'; see GitHub to check other options
-                @ max_iteration_without_improv <int> - maximum number of successive iterations without improvement. If None it is ineffective
+            algorithm_parameters: AlgorithmParams object or usual dictionary with algorithm parameter;
+                it is not mandatory to provide all possible parameters
+
+        Notes:
+            - This implementation minimizes the given objective function.
+            For maximization u can multiply the function by -1 (for instance): the absolute
+                value of the output would be the actual objective function
 
         for more details and examples of implementation please visit:
             https://github.com/PasaOpasen/geneticalgorithm2
@@ -122,7 +123,6 @@ class GeneticAlgorithm2:
 
         # all default fields
 
-        self.param: AlgorithmParams = None
         # self.crossover: Callable[[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]] = None
         # self.real_mutation: Callable[[float, float, float], float] = None
         # self.discrete_mutation: Callable[[int, int, int], int] = None
@@ -149,9 +149,9 @@ class GeneticAlgorithm2:
         )
         if not isinstance(algorithm_parameters, AlgorithmParams):
             algorithm_parameters = AlgorithmParams.from_dict(algorithm_parameters)
-
         algorithm_parameters.validate()
         self.param = algorithm_parameters
+
         self.crossover, self.real_mutation, self.discrete_mutation, self.selection = algorithm_parameters.get_CMS_funcs()
 
         # dimension and area bounds
@@ -203,7 +203,8 @@ class GeneticAlgorithm2:
         self._set_parents_count(self.param.parents_portion)
         self._set_elit_count(self.population_size, self.param.elit_ratio)
         assert self.parents_count >= self.elit_count, (
-            f"\n number of parents ({self.parents_count}) must be greater than number of elits ({self.elit_count})"
+            f"\n number of parents ({self.parents_count}) "
+            f"must be greater than number of elits ({self.elit_count})"
         )
 
         self._set_max_iterations()
@@ -406,8 +407,8 @@ class GeneticAlgorithm2:
             self.indexes_int_mut = self.indexes_int
         else:
             tmp_indexes = set(mutation_indexes)
-            self.indexes_int_mut = np.array(list(set(self.indexes_int).intersection(tmp_indexes)))
-            self.indexes_float_mut = np.array(list(set(self.indexes_float).intersection(tmp_indexes)))
+            self.indexes_int_mut = np.array(list(tmp_indexes.intersection(self.indexes_int)))
+            self.indexes_float_mut = np.array(list(tmp_indexes.intersection(self.indexes_float)))
 
             if self.indexes_float_mut.size == 0 and self.indexes_int_mut.size == 0:
                 warnings.warn(f"No mutation dimensions!!! Check ur mutation indexes!!")
@@ -422,7 +423,7 @@ class GeneticAlgorithm2:
         # deprecated
         disable_progress_bar: bool = False,
 
-        set_function: Optional[Callable[[array2D], array1D]] = None,
+        set_function: SetFunctionToMinimize = None,
         apply_function_to_parents: bool = False,
         start_generation: GenerationConvertible = Generation(),
         studEA: bool = False,

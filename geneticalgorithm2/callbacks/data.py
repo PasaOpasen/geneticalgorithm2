@@ -9,6 +9,7 @@ from ..mutations import MutationFloatFunc, MutationIntFunc
 from ..selections import SelectionFunc
 from ..utils.aliases import array2D, array1D
 
+from ..data_types.aliases import SetFunctionToMinimize
 from ..data_types.generation import Generation
 from ..data_types.base import DictLikeGetSet
 
@@ -42,7 +43,7 @@ class MiddleCallbackData(DictLikeGetSet):
     parents_portion: float
     elit_ratio: float
 
-    set_function: Callable[[array2D], array1D]
+    set_function: SetFunctionToMinimize
 
 
 SimpleCallbackFunc: TypeAlias = Callable[[int, List[float], array2D, array1D], None]

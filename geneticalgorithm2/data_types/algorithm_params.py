@@ -34,7 +34,9 @@ class AlgorithmParams(DictLikeGetSet):
     """Base optimization parameters container"""
 
     max_num_iteration: Optional[int] = None
+    """max iterations count of the algorithm"""
     max_iteration_without_improv: Optional[int] = None
+    """max iteration without progress"""
 
     population_size: int = 100
 
@@ -49,7 +51,9 @@ class AlgorithmParams(DictLikeGetSet):
 
     crossover_type: Union[str, CrossoverFunc] = 'uniform'
     mutation_type: Union[str, MutationFloatFunc] = 'uniform_by_center'
+    """mutation type for real variable"""
     mutation_discrete_type: Union[str, MutationIntFunc] = 'uniform_discrete'
+    """mutation type for discrete variables"""
     selection_type: Union[str, SelectionFunc] = 'roulette'
 
     def validate(self) -> None:
