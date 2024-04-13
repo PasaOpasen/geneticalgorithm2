@@ -118,6 +118,9 @@ class GeneticAlgorithm2:
             For maximization u can multiply the function by -1 (for instance): the absolute
                 value of the output would be the actual objective function
 
+            - If u want to use set_function only and maybe u dont have usual function,
+                just set the function to something like lambda x: 0 but set function_timeout=None too
+
         for more details and examples of implementation please visit:
             https://github.com/PasaOpasen/geneticalgorithm2
   
@@ -664,7 +667,7 @@ class GeneticAlgorithm2:
         self.set_function = set_function or GeneticAlgorithm2.default_set_function(self.f)
 
         #region Initial population, duplicates filter, revolutionary
-        
+
         pop_coef, initializer_func = population_initializer
         
         # population creator by random or with oppositions
