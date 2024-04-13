@@ -1,0 +1,12 @@
+https://pasaopasen.github.io/geneticalgorithm2/docs/aliases.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/cache.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/callbacks.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/classes.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/crossovers.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/files.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/geneticalgorithm2.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/initializer.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/mutations.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/plotting_tools.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/selections.html
+https://pasaopasen.github.io/geneticalgorithm2/docs/utils.html
