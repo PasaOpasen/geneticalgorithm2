@@ -39,6 +39,13 @@
                     <li><a href="geneticalgorithm2/utils.html">utils</a></li>
             </ul>
 
+            <h2>API Documentation</h2>
+                <ul class="memberlist">
+            <li>
+                    <a class="variable" href="#geneticalgorithm2">geneticalgorithm2</a>
+            </li>
+    </ul>
+
 
             <footer>geneticalgorithm2 6.8.7, ver.  + 3 commits</footer>
 
@@ -60,24 +67,41 @@ geneticalgorithm2    </h1>
 
                         <label class="view-source-button" for="mod-geneticalgorithm2-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">from</span> <span class="nn">.classes</span> <span class="kn">import</span> <span class="n">Generation</span><span class="p">,</span> <span class="n">AlgorithmParams</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">TypeAlias</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span> <span class="nn">.geneticalgorithm2</span> <span class="kn">import</span> <span class="n">geneticalgorithm2</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span> <span class="nn">.classes</span> <span class="kn">import</span> <span class="n">Generation</span><span class="p">,</span> <span class="n">AlgorithmParams</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span> <span class="nn">.mutations</span> <span class="kn">import</span> <span class="n">Mutations</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="kn">from</span> <span class="nn">.crossovers</span> <span class="kn">import</span> <span class="n">Crossover</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span> <span class="nn">.selections</span> <span class="kn">import</span> <span class="n">Selection</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span> <span class="nn">.initializer</span> <span class="kn">import</span> <span class="n">Population_initializer</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="kn">from</span> <span class="nn">.cache</span> <span class="kn">import</span> <span class="n">np_lru_cache</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="kn">from</span> <span class="nn">.callbacks</span> <span class="kn">import</span> <span class="n">Callbacks</span><span class="p">,</span> <span class="n">Actions</span><span class="p">,</span> <span class="n">ActionConditions</span><span class="p">,</span> <span class="n">MiddleCallbacks</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span> <span class="nn">.geneticalgorithm2</span> <span class="kn">import</span> <span class="n">GeneticAlgorithm2</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="c1"># to keep backward compatibility</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="n">geneticalgorithm2</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">GeneticAlgorithm2</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span> <span class="nn">.mutations</span> <span class="kn">import</span> <span class="n">Mutations</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="kn">from</span> <span class="nn">.crossovers</span> <span class="kn">import</span> <span class="n">Crossover</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="kn">from</span> <span class="nn">.selections</span> <span class="kn">import</span> <span class="n">Selection</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="kn">from</span> <span class="nn">.plotting_tools</span> <span class="kn">import</span> <span class="n">plot_pop_scores</span><span class="p">,</span> <span class="n">plot_several_lines</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="kn">from</span> <span class="nn">.initializer</span> <span class="kn">import</span> <span class="n">Population_initializer</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="kn">from</span> <span class="nn">.cache</span> <span class="kn">import</span> <span class="n">np_lru_cache</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="kn">from</span> <span class="nn">.callbacks</span> <span class="kn">import</span> <span class="n">Callbacks</span><span class="p">,</span> <span class="n">Actions</span><span class="p">,</span> <span class="n">ActionConditions</span><span class="p">,</span> <span class="n">MiddleCallbacks</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="kn">from</span> <span class="nn">.plotting_tools</span> <span class="kn">import</span> <span class="n">plot_pop_scores</span><span class="p">,</span> <span class="n">plot_several_lines</span>
 </span></pre></div>
 
 
             </section>
+                <section id="geneticalgorithm2">
+                    <div class="attr variable">
+            <span class="name">geneticalgorithm2</span><span class="annotation">: typing_extensions.TypeAlias</span>        =
+<span class="default_value">&lt;class &#39;<a href="geneticalgorithm2/geneticalgorithm2.html#GeneticAlgorithm2">geneticalgorithm2.geneticalgorithm2.GeneticAlgorithm2</a>&#39;&gt;</span>
+
+        
+    </div>
+    <a class="headerlink" href="#geneticalgorithm2"></a>
+    
+    
+
+                </section>
     </main>
 <script>
     function escapeHTML(html) {
