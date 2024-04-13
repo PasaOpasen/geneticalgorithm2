@@ -31,6 +31,7 @@ _algorithm_params_slots = {
 
 @dataclass
 class AlgorithmParams(DictLikeGetSet):
+    """Base optimization parameters container"""
 
     max_num_iteration: Optional[int] = None
     max_iteration_without_improv: Optional[int] = None
@@ -71,8 +72,8 @@ class AlgorithmParams(DictLikeGetSet):
         SelectionFunc
     ]:
         """
-        returns gotten crossover, mutation, discrete mutation, selection
-        as necessary functions
+        Returns:
+            gotten (crossover, mutation, discrete mutation, selection) as necessary functions
         """
 
         result: List[Callable] = []
@@ -94,27 +95,20 @@ class AlgorithmParams(DictLikeGetSet):
 
         return tuple(result)
 
+    def update(self, dct: Dict[str, Any]):
+        for name, value in dct.items():
+            if name not in _algorithm_params_slots:
+                raise AttributeError(
+                    f"name '{name}' does not exists in AlgorithmParams fields: "
+                    f"{', '.join(sorted(_algorithm_params_slots))}"
+                )
+        for name, value in dct.items():  # perform update in separate loop only if all is valid
+            setattr(self, name, value)
+
     @staticmethod
     def from_dict(dct: Dict[str, Any]):
 
         result = AlgorithmParams()
-
-        for name, value in dct.items():
-            if name not in _algorithm_params_slots:
-                raise AttributeError(f"name '{name}' does not exists in AlgorithmParams fields")
-
-            setattr(result, name, value)
+        result.update(dct)
         return result
-
-
-
-
-
-
-
-
-
-
-
-
 
