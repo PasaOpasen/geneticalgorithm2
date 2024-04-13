@@ -1,11 +1,10 @@
 
-from typing import Callable, List, Tuple, Optional, Dict, Any, Union, Sequence, Set, Literal
+from typing import Callable, List, Tuple, Optional, Dict, Any, Union, Sequence, Literal, Iterable
 from typing_extensions import TypeAlias
 
 import collections
 import warnings
 import operator
-
 
 import sys
 import time
@@ -13,6 +12,9 @@ import random
 import math
 
 import numpy as np
+
+from OppOpPopInit.initialiser import CreatorFunc
+from OppOpPopInit.oppositor import OppositorFunc
 
 #region INTERNAL IMPORTS
 
@@ -23,7 +25,7 @@ from .data_types.algorithm_params import AlgorithmParams
 from .data_types.generation import GenerationConvertible, Generation
 from .data_types.result import GAResult
 
-from .population_initializer import get_population_initializer
+from .population_initializer import get_population_initializer, PopulationModifier
 from .utils.plotting import plot_pop_scores, plot_several_lines
 
 from .utils.funcs import can_be_prob, is_numpy, is_current_gen_number, fast_min, random_indexes_pair
@@ -400,7 +402,7 @@ class GeneticAlgorithm2:
 
         return obj, eval_time
 
-    def _set_mutation_indexes(self, mutation_indexes: Optional[Sequence[int]]):
+    def _set_mutation_indexes(self, mutation_indexes: Optional[Iterable[int]]):
 
         if mutation_indexes is None:
             self.indexes_float_mut = self.indexes_float
@@ -427,20 +429,20 @@ class GeneticAlgorithm2:
         apply_function_to_parents: bool = False,
         start_generation: GenerationConvertible = Generation(),
         studEA: bool = False,
-        mutation_indexes: Optional[Union[Sequence[int], Set[int]]] = None,
+        mutation_indexes: Optional[Iterable[int]] = None,
 
-        init_creator: Optional[Callable[[], array1D]] = None,
-        init_oppositors: Optional[Sequence[Callable[[array1D], array1D]]] = None,
+        init_creator: Optional[CreatorFunc] = None,
+        init_oppositors: Optional[Sequence[OppositorFunc]] = None,
 
-        duplicates_oppositor: Optional[Callable[[array1D], array1D]] = None,
+        duplicates_oppositor: Optional[OppositorFunc] = None,
         remove_duplicates_generation_step: Optional[int] = None,
 
-        revolution_oppositor: Optional[Callable[[array1D], array1D]] = None,
+        revolution_oppositor: Optional[OppositorFunc] = None,
         revolution_after_stagnation_step: Optional[int] = None,
         revolution_part: float = 0.3,
 
         population_initializer: Tuple[
-            int, Callable[[array2D, array1D], Tuple[array2D, array1D]]
+            int, PopulationModifier
         ] = get_population_initializer(select_best_of=1, local_optimization_step='never', local_optimizer=None),
 
         stop_when_reached: Optional[float] = None,
@@ -460,17 +462,13 @@ class GeneticAlgorithm2:
 
             progress_bar_stream: 'stdout', 'stderr' or None to disable progress bar
 
-            disable_progress_bar:
+            disable_progress_bar: deprecated
 
-            set_function : 2D-array -> 1D-array function,
-                which applyes to matrix of population (size (samples, dimention))
-                    to estimate their values
+            set_function: set function to be used instead of usual function
 
-            apply_function_to_parents: apply function to parents from previous generation (if it's needed)
+            apply_function_to_parents: whether to apply function to parents from previous generation (if it's needed)
 
-            start_generation: Generation object or a dictionary with structure
-                {'variables':2D-array of samples, 'scores': function values on samples}
-                or path to .npz file (str) with saved generation; if 'scores' value is None the scores will be compute
+            start_generation: initial generation object of any `GenerationConvertible` type
 
             studEA: using stud EA strategy (crossover with best object always)
 
@@ -479,10 +477,12 @@ class GeneticAlgorithm2:
             init_creator: the function creates population samples.
                 By default -- random uniform for real variables and random uniform for int
             init_oppositors: the list of oppositors creates oppositions for base population. No by default
+
             duplicates_oppositor: oppositor for applying after duplicates removing.
                 By default -- using just random initializer from creator
             remove_duplicates_generation_step: step for removing duplicates (have a sense with discrete tasks).
                 No by default
+
             revolution_oppositor: oppositor for revolution time. No by default
             revolution_after_stagnation_step: create revolution after this generations of stagnation. No by default
             revolution_part: float, the part of generation to being oppose. By default is 0.3
@@ -495,7 +495,7 @@ class GeneticAlgorithm2:
             callbacks: sequence of callback functions with structure:
                 (generation_number, report_list, last_population, last_scores) -> do some action
 
-            middle_callbacks: sequence of functions made MiddleCallbacks class
+            middle_callbacks: sequence of functions made `MiddleCallback` class
 
             time_limit_secs: limit time of working (in seconds)
 

@@ -6,6 +6,12 @@ import numpy as np
 from .utils.aliases import TypeAlias, array1D, array2D
 
 
+PopulationModifier: TypeAlias = Callable[[array2D, array1D], Tuple[array2D, array1D]]
+"""
+function (population matrix, population scores) -> (new matrix, new scores)
+which will perform the bests selection and local optimization and other population transformations
+"""
+
 LOCAL_OPTIMIZATION_STEP_CASE: TypeAlias = Literal['before_select', 'after_select', 'never']
 """
 When the local optimization (candidates enhancing) must be performed:
@@ -25,7 +31,7 @@ def get_population_initializer(
             Tuple[array1D, float]
         ]
     ] = None
-) -> Tuple[int, Callable[[array2D, array1D], Tuple[array2D, array1D]]]:
+) -> Tuple[int, PopulationModifier]:
     """
     Args:
         select_best_of: determines population size to select 1/select_best_of best part of start population.
@@ -36,7 +42,7 @@ def get_population_initializer(
         local_optimizer: the local optimization function (object array, its score) -> (modified array, its score)
 
     Returns:
-        select_best_of, function which will perform the selection and local optimization
+        select_best_of, population modifier
     """
     
     assert select_best_of > 0 and isinstance(select_best_of, int), (select_best_of, type(select_best_of))
