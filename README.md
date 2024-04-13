@@ -16,6 +16,7 @@ https://pasaopasen.github.io/geneticalgorithm2/
 - [Updates information](#updates-information)
   - [**Future**](#future)
   - [**TODO firstly**](#todo-firstly)
+  - [6.8.8 reborn](#688-reborn)
   - [6.8.7 minor update](#687-minor-update)
   - [6.8.6 minor update](#686-minor-update)
   - [6.8.5 minor update](#685-minor-update)
@@ -154,6 +155,13 @@ pip install geneticalgorithm2[full]
 
 ## **TODO firstly**
 - Remove old style mensions from README
+
+
+## 6.8.8 reborn
+
+- recreate the repository without excess heavy files materials 
+- host the [code documentation](https://pasaopasen.github.io/geneticalgorithm2/)
+- rename `geneticalgorithm2` class to `GeneticAlgorithm2`
 
 ## 6.8.7 minor update
 
