@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -x
+set -eu
 
 if [ ! -d documentation ]; then
     echo "Error: invalid directory *$PWD*. Deploy from repo root."
