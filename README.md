@@ -982,12 +982,14 @@ def f(X):
 dim = 25
 varbound = [[0, 10]] * dim
 
-model = ga(function=f, dimension=dim,
-           variable_type='real', variable_boundaries=varbound,
-           algorithm_parameters={
-               'max_num_iteration': 600
-           }
-           )
+model = ga(
+    dimension=dim,
+    variable_type='real', 
+    variable_boundaries=varbound,
+    algorithm_parameters={
+        'max_num_iteration': 600
+    }
+)
 
 # here model exists and has checked_reports field
 # now u can append any functions to report
@@ -1001,7 +1003,10 @@ model.checked_reports.extend(
 )
 
 # run optimization process
-model.run(no_plot=False)
+model.run(
+    function=f,
+    no_plot=False
+)
 
 # now u have not only model.report but model.report_25 and so on
 
