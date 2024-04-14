@@ -16,6 +16,7 @@ https://pasaopasen.github.io/geneticalgorithm2/
 - [Updates information](#updates-information)
   - [**Future**](#future)
   - [**TODO firstly**](#todo-firstly)
+  - [6.9.2 bugfixes](#692-bugfixes)
   - [6.9.1 refactor](#691-refactor)
   - [6.9.0 reborn](#690-reborn)
   - [6.8.7 minor update](#687-minor-update)
@@ -162,6 +163,8 @@ pip install geneticalgorithm2[full]
 
 ## **TODO firstly**
 - Remove old style mentions from README
+
+## 6.9.2 bugfixes
 
 ## 6.9.1 refactor
 

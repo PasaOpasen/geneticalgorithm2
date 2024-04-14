@@ -129,7 +129,7 @@ class Selection:
             else:
                 f = np.maximum(epsilon, 1 + (f - average)/(2*sigma))
             
-            return Selection.__roulette(f, parents_count)
+            return roulette(f, parents_count)
         
         return func
 
