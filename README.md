@@ -68,6 +68,7 @@ https://pasaopasen.github.io/geneticalgorithm2/
   - [Middle example: select fixed count of objects from set](#middle-example-select-fixed-count-of-objects-from-set)
 - [U should know these features](#u-should-know-these-features)
   - [Available crossovers](#available-crossovers)
+  - [Available selections](#available-selections)
   - [Function timeout](#function-timeout)
   - [Standard GA vs. Elitist GA](#standard-ga-vs-elitist-ga)
   - [Standard crossover vs. stud EA crossover](#standard-crossover-vs-stud-ea-crossover)
@@ -541,69 +542,15 @@ params = model.param
 
 #### **Crossover**
 
-* **crossover_type**: there are several options including `'one_point'`, `'two_point'`, `'uniform'`, `'segment'`, `'shuffle'` crossover functions; default is `'uniform'` crossover. U also can use crossover as functions from `Crossover` class:
-    * `Crossover.one_point()`
-    * `Crossover.two_point()`
-    * `Crossover.uniform()`
-    * `Crossover.uniform_window(window = 7)`
-    * `Crossover.shuffle()`
-    * `Crossover.segment()`
-    * `Crossover.mixed(alpha = 0.5)` -- only for real variables
-    * `Crossover.arithmetic()` -- only for real variables
-    
-    Have a look at [crossovers' logic](#available-crossovers)
-
-    If u want, write your own crossover function using simple syntax:
-    ```python
-    def my_crossover(parent_a: np.ndarray, parent_b: np.ndarray):
-        # some code
-        return child_1, child_2
-    ```
+https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/crossovers.html
 
 #### **Mutation**
 
-* **mutation_probability**: determines the chance of each gene in each individual solution to be replaced by a random value. Works for continuous variables or for all variables if **mutation_discrete_probability** is `None`
-
-* **mutation_discrete_probability**: works like **mutation_probability** but for discrete variables. If `None`, will be changed to **mutation_probability** value; so just don't specify this parameter if u don't need special mutation behavior for discrete variables
-
-* **mutation_type**: there are several options (only for real variables) including `'uniform_by_x'`, `'uniform_by_center'`, `'gauss_by_x'`, `'gauss_by_center'`; default is `'uniform_by_center'`. U also can use mutation as functions from `Mutations` class:
-    * `Mutations.gauss_by_center(sd = 0.2)`
-    * `Mutations.gauss_by_x(sd = 0.1)`
-    * `Mutations.uniform_by_center()`
-    * `Mutations.uniform_by_x()`
-
-    (If u want) write your mutation function using syntax:
-    ```python
-    def my_mutation(current_value: float, left_border: float, right_border: float) -> float:
-        # some code
-        return new_value 
-    ```
-
-* **mutation_discrete_type**: now there is only one option for discrete variables mutation: `uniform_discrete` (`Mutations.uniform_discrete()`) which works like `uniform_by_center` real mutation but with integer numbers. Anyway, this option was included at version 6.7.0 to support custom discrete mutations if u need it. For using custom mutation just set this parameter to function like
-  ```python
-    def my_mutation(current_value: int, left_border: int, right_border: int) -> int:
-        # some code
-        return new_value 
-  ```
+https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/mutations.html
 
 #### **Selection**
 
-* **selection_type**: there are several options (only for real) including `'fully_random'` (just for fun), `'roulette'`, `'stochastic'`, `'sigma_scaling'`, `'ranking'`, `'linear_ranking'`, `'tournament'`; default is `roulette`. U also can use selection as functions from `Selection` class:
-    * `Selection.fully_random()`
-    * `Selection.roulette()`
-    * `Selection.stochastic()`
-    * `Selection.sigma_scaling(epsilon = 0.05)`
-    * `Selection.ranking()`
-    * `Selection.linear_ranking(selection_pressure = 1.5)`
-    * `Selection.tournament(tau = 2)`
-
-    If u want, write your selection function using syntax:
-    ```python
-    def my_mutation(sorted_scores: np.ndarray, parents_count: int):
-        # some code
-        return array_of_parents_indexes 
-    ```
-![](examples/output/selections.png)
+https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/selections.html
 
 ## Methods and Properties of model:
 
@@ -961,6 +908,10 @@ For two example parents (*one with ones* and *one with zeros*) next crossovers w
 |0.63 | 0.84 | 1.1 | 0.73 | 0.67 | -0.19 | 0.3 | 0.72 | -0.18 | 0.61 | 0.84 | 1.14 | 1.36 | -0.37 | -0.19|
 |:---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---:|
 |0.51 | 0.58 | 0.43 | 0.42 | 0.55 | 0.49 | 0.57 | 0.48 | 0.46 | 0.56 | 0.56 | 0.54 | 0.44 | 0.51 | 0.4|
+
+## Available selections
+
+![](examples/output/selections.png)
 
 
 ## Function timeout

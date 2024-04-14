@@ -62,6 +62,13 @@ class AlgorithmParams(DictLikeGetSet):
 
     mutation_probability: float = 0.1
     mutation_discrete_probability: Optional[float] = None
+    """
+    works like `mutation_probability` but for discrete variables. 
+    
+    If `None`, will be assigned to `mutation_probability` value; 
+        so just don't specify this parameter 
+        if u don't need special mutation behavior for discrete variables
+    """
 
     #  deprecated
     crossover_probability: Optional[float] = None

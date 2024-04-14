@@ -17,7 +17,11 @@ def get_copies(x: array1D, y: array1D) -> Tuple[array1D, array1D]:
 
 
 class Crossover:
-    """Crossover functions static class"""
+    """
+    Crossover functions static class
+    
+    Crossover creates 2 children from 2 parents someway, usually mixing the parents
+    """
 
     @staticmethod
     def crossovers_dict() -> Dict[str, CrossoverFunc]:

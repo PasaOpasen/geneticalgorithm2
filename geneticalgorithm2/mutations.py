@@ -20,7 +20,11 @@ Which mutates x to value according to bounds (left, right)
 
 
 class Mutations:
-    """Mutations functions static class"""
+    """
+    Mutations functions static class
+    
+    Mutation changes the sample randomly providing the evolution component to optimization
+    """
 
     @staticmethod
     def mutations_dict() -> Dict[str, MutationFloatFunc]:

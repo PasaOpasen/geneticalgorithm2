@@ -17,7 +17,7 @@ Function (scores, count to select) -> indexes of selected
 
 def inverse_scores(scores: array1D) -> array1D:
     """
-    inverses scores (min val goes to max)
+    inverses scores (min values become to max)
     """
     minobj = scores[0]
     normobj = scores - minobj if minobj < 0 else scores
@@ -50,6 +50,8 @@ def roulette(scores: array1D, parents_count: int) -> array1D:
 class Selection:
     """
     Selections functions static class
+    
+    Selection function selects the population subset according to scores and its own rules
     """
 
     @staticmethod
