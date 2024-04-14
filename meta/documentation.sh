@@ -43,11 +43,6 @@ find ./documentation/tmp/$pkg -type f ! -name "*.py" -delete
 find ./documentation/tmp/$pkg -type d -empty -delete
 
 #
-# change some aliases
-#
-sed -i 's/np.ndarray/"np.ndarray"/g' ./documentation/tmp/$pkg/utils/aliases.py
-
-#
 #
 # DOCUMENTATION BUILD
 #
