@@ -673,7 +673,7 @@ class GeneticAlgorithm2:
         else:
             def total_middle_callback():
                 """
-                applies callbacks and sets new data if there is a sence
+                applies callbacks and sets new data if there is a sense
                 """
                 data = get_data()
                 flag = False

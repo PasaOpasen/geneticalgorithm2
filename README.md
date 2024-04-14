@@ -44,6 +44,12 @@ https://pasaopasen.github.io/geneticalgorithm2/
   - [6.3.0 minor update (refactoring)](#630-minor-update-refactoring)
 - [Working process](#working-process)
   - [Main algorithm structure](#main-algorithm-structure)
+  - [Optimization process components](#optimization-process-components)
+    - [Function to minimize](#function-to-minimize)
+    - [Optimization space](#optimization-space)
+    - [Algorithm parameters](#algorithm-parameters)
+    - [Samples constructors](#samples-constructors)
+    - [Callbacks](#callbacks)
   - [How to run](#how-to-run)
   - [Constructor parameters](#constructor-parameters)
   - [Genetic algorithm's parameters](#genetic-algorithms-parameters)
@@ -112,6 +118,7 @@ https://pasaopasen.github.io/geneticalgorithm2/
   - [How to specify evaluated function for all population?](#how-to-specify-evaluated-function-for-all-population)
   - [What about parallelism?](#what-about-parallelism)
   - [How to initialize start population? How to continue optimization with new run?](#how-to-initialize-start-population-how-to-continue-optimization-with-new-run)
+
 # About
 
 [**geneticalgorithm2**](https://pasaopasen.github.io/geneticalgorithm2/) is very flexible and highly optimized Python library for implementing classic
@@ -160,6 +167,7 @@ pip install geneticalgorithm2[full]
 
 - Finally move `function_timeout` and `function` to `run()` method and deprecate its usage in init()
 - `function` is not mandatory to be non-empty 
+- reduce documentation duplicates
 
 ## 6.9.0 reborn
 
@@ -168,7 +176,6 @@ pip install geneticalgorithm2[full]
 - rename `geneticalgorithm2` class to `GeneticAlgorithm2`
 - substantial package architecture refactor
 - add more docstrings
-- reduce documentation duplicates 
 
 ## 6.8.7 minor update
 
@@ -333,9 +340,52 @@ Post-process: plotting results, saving
 
 ```
 
+## Optimization process components
+
+### Function to minimize
+
+The goal of the optimization process is to find the *minimum* of the given `function (1D array) -> float` where the function argument is a vector of some values in different dimensions. 
+
+If u want to find the *maximum*, use this idea:
+```python
+opt_func = lambda arr: -func(arr)
+
+#
+# ... find global min of opt_func
+#
+
+opt_minimum=opt_func(best value)
+maximum = -opt_minimum
+```
+
+Also it is possible and highly recommended to create and use a *vectorized* version of this function called `set_function (2D array) -> (1D array)` which transforms several samples matrix to samples scores vector by one call. Using this way u can speed up calculations or set up more complex tasks optimization
+
+### Optimization space
+
+The function rates 1D arrays (vectors) where each component (dimension) means something u program it to mean. Each dimension has its `bound` (`[min; max]` cut) and `variable type` (real/discrete).
+
+**Advice**. Genetic algorithms work much faster and efficient for discrete tasks. If high precision is not required u can split any real dimension to many discrete values (for instance, `[1.1, 1.2, 1.25, 1.44]`) and try to optimize indexes of the given array which are converted to real values inside `function` itself.
+
+### Algorithm parameters
+
+There are a number of hyperparameters u can probe to optimize including population size and selection/crossover/mutation types.
+
+### Samples constructors
+
+There are several ways to create new testing samples from zero when u start with empty population or when u need new samples after [duplicates removing](#duplicates-removing) and [revolutions](#revolutions). 
+
+
+### Callbacks
+
+Now the package supports 2 different types of highly customized callbacks:
+* [simple callbacks](#callbacks)
+* [middle callbacks](#middle-callbacks)
+
 ## How to run
 
-Firstly, u should **import needed packages**. All available (but not always necessary) imports are:
+Firstly, u should **import needed packages**. 
+
+All available (but not always necessary) imports are:
 
 ```python
 import numpy as np
@@ -358,26 +408,14 @@ from geneticalgorithm2 import Callbacks  # simple callbacks (will be deprecated)
 from geneticalgorithm2 import Actions, ActionConditions, MiddleCallbacks  # middle callbacks
 ```
 
-Next step: **define minimized function** like
+Next step: **define the function to minimize**:
 
 ```python
 def function(X: np.ndarray) -> float: # X as 1d-numpy array
     return np.sum(X**2) + X.mean() + X.min() + X[0]*X[2] # some float result
 ```
 
-If u want to find *maximum*, use this idea:
-
-```python
-f_tmp = lambda arr: -target(arr)
-
-#
-# ... find global min
-#
-
-target_result = -global_min
-```
-
-Okay, also u should **create the bounds for each variable** (if exist) like here:
+Also u should **create the bounds for each variable** (if exist) such as:
 
 ```python
 var_bound = np.array([[0,10]]*3) # 2D numpy array with shape (dim, 2)
@@ -388,20 +426,17 @@ var_bound = [
     (0, 10),
     (0, 10)
 ]
-
 ```
-U don't need to use variable boundaries only if variable type of each variable is boolean. This case will be converted to discret variables with bounds `(0, 1)`.
 
-After that **create a `geneticalgorithm2` (was imported early as ga) object**:
+**Important**. U don't need to use variable boundaries only if variable type of each variable is boolean. This case will be automatically converted to discrete variables with bounds `(0, 1)`.
+
+After that u **create a `GeneticAlgorithm2` (was imported early as ga) object**:
 
 ```python
-# style before 6.3.0 version (but still works)
-model = ga(
-    function, 
+model = ga( 
     dimension = 3, 
     variable_type='real', 
     variable_boundaries = var_bound,
-    function_timeout = 10,
     algorithm_parameters={
         'max_num_iteration': None,
         'population_size':100,
@@ -416,39 +451,24 @@ model = ga(
         'max_iteration_without_improv':None
     }
 )
+```
 
-# from version 6.3.0 it is equal to
+**Note**: it is not mandatory to write all possible `algorithm_parameters`, here it is done only to show u defaults. Also u can use `AlgorithmParams` (with typehints and docstrings) class instead of dicts:
 
-model = ga(
-    function, 
-    dimension = 3, 
-    variable_type='real', 
-    variable_boundaries = var_bound,
-    function_timeout = 10,
-    algorithm_parameters=AlgorithmParams(
-        max_num_iteration = None,
-        population_size = 100,
-        mutation_probability = 0.1,
-        mutation_discrete_probability = None,
-        elit_ratio = 0.01,
-        parents_portion = 0.3,
-        crossover_type = 'uniform',
-        mutation_type = 'uniform_by_center',
-        mutation_discrete_type = 'uniform_discrete',
-        selection_type = 'roulette',
-        max_iteration_without_improv = None
-    )
+```python
+algorithm_parameters=AlgorithmParams(
+    max_num_iteration=None,
+    population_size=100,
+    mutation_probability=0.1,
+    mutation_discrete_probability=None,
+    elit_ratio=0.01,
+    parents_portion=0.3,
+    crossover_type='uniform',
+    mutation_type='uniform_by_center',
+    mutation_discrete_type='uniform_discrete',
+    selection_type='roulette',
+    max_iteration_without_improv=None
 )
-
-# or (with defaults)           
-model = ga(
-    function, dimension = 3, 
-    variable_type='real', 
-    variable_boundaries = var_bound,
-    function_timeout = 10,
-    algorithm_parameters=AlgorithmParams()
-)           
-
 ```
 
 **Run the search method**:
@@ -459,6 +479,9 @@ result = model.run(
     no_plot = False, 
     progress_bar_stream = 'stdout',
     disable_printing = False,
+
+    function=function,
+    function_timeout=None,
 
     set_function = None, 
     apply_function_to_parents = False, 
@@ -484,7 +507,7 @@ result = model.run(
     seed = None
 )
 
-# best solution
+# best candidate
 print(result.variable)
 
 # best score
