@@ -210,7 +210,7 @@ pip install geneticalgorithm2[full]
 
 ## 6.8.0 minor update
 
-- remove `crossover_probability` model parameter because of it has no sense to exist (and 1.0 value is better than others, take a look at [results](/tests/output/sense_of_crossover_prob__no_sense.png)). This parameter came from `geneticalgorithm` old package and did`t change before.
+- remove `crossover_probability` model parameter because of it has no sense to exist (and 1.0 value is better than others, take a look at [results](/examples/output/sense_of_crossover_prob__no_sense.png)). This parameter came from `geneticalgorithm` old package and did`t change before.
 
 ## 6.7.7 refactor
 
@@ -288,7 +288,7 @@ pip install geneticalgorithm2[full]
     * `np.ndarray` with shape `(samples, dim)` for only population or `(samples, dim+1)` for concatenated population and score (scores is the last matrix column)
     * `tuple(np.ndarray/None, np.ndarray/None)` for variables and scores
   
-  here `variables` is 2D numpy array with shape `(samples, dim)`, `scores` is 1D numpy array with scores (function values) for each sample; [here](tests/output/start_gen.py) and [here](#how-to-initialize-start-population-how-to-continue-optimization-with-new-run) u can see examples of using these valid forms 
+  here `variables` is 2D numpy array with shape `(samples, dim)`, `scores` is 1D numpy array with scores (function values) for each sample; [here](examples/output/start_gen.py) and [here](#how-to-initialize-start-population-how-to-continue-optimization-with-new-run) u can see examples of using these valid forms 
 
 
 ## 6.3.0 minor update (refactoring)
@@ -711,7 +711,7 @@ If this parameter's value is `None` the algorithm sets maximum number of iterati
         # some code
         return array_of_parents_indexes 
     ```
-![](tests/output/selections.png)
+![](examples/output/selections.png)
 
 ## Methods and Properties of model:
 
@@ -735,7 +735,7 @@ The main method if **run()**. It has parameters:
   *  tuple of `np.ndarray`s / `None`. 
 
 * **studEA** (`bool`) - using stud EA strategy (crossover with best object always). Default is false. [Take a look](#standard-crossover-vs-stud-ea-crossover)
-* **mutation_indexes** (`Optional[Union[Sequence[int], Set[int]]]`) - indexes of dimensions where mutation can be performed (all dimensions by default). [Example](tests/mut_indexes.py)
+* **mutation_indexes** (`Optional[Union[Sequence[int], Set[int]]]`) - indexes of dimensions where mutation can be performed (all dimensions by default). [Example](examples/mut_indexes.py)
 
 * **init_creator**: (`Optional[Callable[[], np.ndarray]]`), the function creates population samples. By default -- random uniform for real variables and random uniform for int. [Example](#optimization-with-oppositions)
 * **init_oppositors**: (`Optional[Sequence[Callable[[np.ndarray], np.ndarray]]]`) -- the list of oppositors creates oppositions for base population. No by default. [Example](#optimization-with-oppositions)
@@ -756,14 +756,14 @@ The main method if **run()**. It has parameters:
       # do some action
       #
   ```
-    See [example of using callbacks](tests/callbacks.py). There are several callbacks in `Callbacks` class, such as:
+    See [example of using callbacks](examples/callbacks.py). There are several callbacks in `Callbacks` class, such as:
     * `Callbacks.SavePopulation(folder, save_gen_step = 50, file_prefix = 'population')`
     * `Callbacks.PlotOptimizationProcess(folder, save_gen_step = 50, show = False, main_color = 'green', file_prefix = 'report')`
 
 * **middle_callbacks** (`Sequence`) - list of functions made `MiddleCallbacks` class (large opportunity, please, have a look at [this](#middle-callbacks)) 
 
 
-* **time_limit_secs** (`Optional[float]`) - limit time of working (in seconds). If `None`, there is no time limit (limit only for count of generation and so on). See [little example of using](tests/time_limit.py). Also there is simple conversion function for conversion some time in seconds:
+* **time_limit_secs** (`Optional[float]`) - limit time of working (in seconds). If `None`, there is no time limit (limit only for count of generation and so on). See [little example of using](examples/time_limit.py). Also there is simple conversion function for conversion some time in seconds:
   ```python
   from truefalsepython import time_to_seconds
 
@@ -1020,7 +1020,7 @@ model.run(no_plot=False, start_generation=(start_generation, None))
 
 ## Available crossovers
 
-For two example parents (*one with ones* and *one with zeros*) next crossovers will give same children ([examples](tests/crossovers_examples.py)): 
+For two example parents (*one with ones* and *one with zeros*) next crossovers will give same children ([examples](examples/crossovers_examples.py)): 
 
 * **one_point**:
 
@@ -1085,13 +1085,13 @@ make sure to increase function_timeout in arguments.
 
 The convergence curve of an elitist genetic algorithm is always non-increasing. So, the best ever found solution is equal to the best solution of the last iteration. However, the convergence curve of a standard genetic algorithm is different. If `elit_ratio` is zero geneticalgorithm2 implements a standard GA. The output of geneticalgorithm2 for standard GA is the best ever found solution not the solution of the last iteration. The difference between the convergence curve of standard GA and elitist GA is shown below:
 
-![](tests/output/standard_vs_elitist.png)
+![](examples/output/standard_vs_elitist.png)
 
 ## Standard crossover vs. stud EA crossover
 
 [Stud EA](https://link.springer.com/chapter/10.1007%2FBFb0056910) is the idea of using crossover always with best object. So one of two parents is always the best object of population. It can help us in a lot of tasks!
 
-![](tests/output/studEA.png)
+![](examples/output/studEA.png)
 
 ## Creating better start population
 
@@ -1116,7 +1116,7 @@ There is `Population_initializer(select_best_of = 4, local_optimization_step = '
 
 This little option can help u especially with multimodal tasks. 
 
-![](tests/output/init_best_of.png)
+![](examples/output/init_best_of.png)
 
 ### Do local optimization
 
@@ -1173,26 +1173,26 @@ plt.title('Selection best N object before running GA')
 plt.legend()
 ```
 
-![](tests/output/init_local_opt.png)
+![](examples/output/init_local_opt.png)
 
 ### Optimization with oppositions
 
-Also u can create start population with [oppositions](https://github.com/PasaOpasen/opp-op-pop-init). See [example of code](tests/best_of_N_with_opp.py)
+Also u can create start population with [oppositions](https://github.com/PasaOpasen/opp-op-pop-init). See [example of code](examples/best_of_N_with_opp.py)
 
-![](tests/output/init_best_of_opp.png)
+![](examples/output/init_best_of_opp.png)
 
 ## Revolutions
 
-U can create [revolutions in your population](https://github.com/PasaOpasen/opp-op-pop-init) after some stagnation steps. It really can help u for some tasks. See [example](tests/revolution.py)
+U can create [revolutions in your population](https://github.com/PasaOpasen/opp-op-pop-init) after some stagnation steps. It really can help u for some tasks. See [example](examples/revolution.py)
 
-![](tests/output/revolution.png)
+![](examples/output/revolution.png)
 
 
 ## Duplicates removing
 
-If u remove duplicates each `k` generations, u can speed up the optimization process ([example](tests/remove_dups.py))
+If u remove duplicates each `k` generations, u can speed up the optimization process ([example](examples/remove_dups.py))
 
-![](tests/output/remove_dups.png)
+![](examples/output/remove_dups.png)
 
 ## Cache
 
@@ -1270,7 +1270,7 @@ plot_several_lines(
 )
 ```
 
-![](tests/output/report.png)
+![](examples/output/report.png)
 
 As u see, u should append tuple `(name of report, func to evaluate report)` to `model.checked_report`. It's highly recommended to start this name with `report_` (e. g. `report_my_median`). And the function u use will get 1D-numpy *sorted* array of population scores.
 
@@ -1329,11 +1329,11 @@ To combine `action` and `condition` to callback, just use `MiddleCallbacks.Unive
 There are also next high-level useful callbacks:
 
 * `MiddleCallbacks.ReduceMutationGen(reduce_coef = 0.9, min_mutation = 0.005, reduce_each_generation = 50, reload_each_generation = 500)`
-* `MiddleCallbacks.GeneDiversityStats(step_generations_for_plotting:int = 10)` -- plots some duplicates statistics each gen ([example](/tests/plot_diversities.py))
+* `MiddleCallbacks.GeneDiversityStats(step_generations_for_plotting:int = 10)` -- plots some duplicates statistics each gen ([example](/examples/plot_diversities.py))
 ![](diversity.gif)
 
 
-See [code example](tests/small_middle_callbacks.py)
+See [code example](examples/small_middle_callbacks.py)
 
 ## How to compare efficiency of several versions of GA optimization
 
@@ -1547,83 +1547,83 @@ model.run(...)
 
 Here there is the implementation of `geneticalgorithm2` for some benchmark problems. Test functions are got from my [`OptimizationTestFunctions`](https://github.com/PasaOpasen/OptimizationTestFunctions) package. 
 
-The code for optimizations process is same for each function and is contained [in file](tests/optimization_test_functions.py).
+The code for optimizations process is same for each function and is contained [in file](examples/optimization_test_functions.py).
 
 ### [Sphere](https://github.com/PasaOpasen/OptimizationTestFunctions#sphere)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Sphere.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Sphere.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Sphere.png)
 
 ### [Ackley](https://github.com/PasaOpasen/OptimizationTestFunctions#ackley)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Ackley.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Ackley.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Ackley.png)
 
 ### [AckleyTest](https://github.com/PasaOpasen/OptimizationTestFunctions#ackleytest)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20AckleyTest.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20AckleyTest.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20AckleyTest.png)
 
 ### [Rosenbrock](https://github.com/PasaOpasen/OptimizationTestFunctions#rosenbrock)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Rosenbrock.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Rosenbrock.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Rosenbrock.png)
 
 ### [Fletcher](https://github.com/PasaOpasen/OptimizationTestFunctions#fletcher)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Fletcher.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Fletcher.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Fletcher.png)
 
 ### [Griewank](https://github.com/PasaOpasen/OptimizationTestFunctions#griewank)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Griewank.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Griewank.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Griewank.png)
 
 ### [Penalty2](https://github.com/PasaOpasen/OptimizationTestFunctions#penalty2)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Penalty2.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Penalty2.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Penalty2.png)
 
 ### [Quartic](https://github.com/PasaOpasen/OptimizationTestFunctions#quartic)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Quartic.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Quartic.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Quartic.png)
 
 ### [Rastrigin](https://github.com/PasaOpasen/OptimizationTestFunctions#rastrigin)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Rastrigin.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Rastrigin.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Rastrigin.png)
 
 ### [SchwefelDouble](https://github.com/PasaOpasen/OptimizationTestFunctions#schwefeldouble)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20SchwefelDouble.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20SchwefelDouble.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20SchwefelDouble.png)
 
 ### [SchwefelMax](https://github.com/PasaOpasen/OptimizationTestFunctions#schwefelmax)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20SchwefelMax.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20SchwefelMax.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20SchwefelMax.png)
 
 ### [SchwefelAbs](https://github.com/PasaOpasen/OptimizationTestFunctions#schwefelabs)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20SchwefelAbs.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20SchwefelAbs.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20SchwefelAbs.png)
 
 ### [SchwefelSin](https://github.com/PasaOpasen/OptimizationTestFunctions#schwefelsin)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20SchwefelSin.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20SchwefelSin.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20SchwefelSin.png)
 
 ### [Stairs](https://github.com/PasaOpasen/OptimizationTestFunctions#stairs)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Stairs.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Stairs.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Stairs.png)
 
 ### [Abs](https://github.com/PasaOpasen/OptimizationTestFunctions#abs)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Abs.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Abs.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Abs.png)
 
 ### [Michalewicz](https://github.com/PasaOpasen/OptimizationTestFunctions#michalewicz)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Michalewicz.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Michalewicz.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Michalewicz.png)
 
 ### [Scheffer](https://github.com/PasaOpasen/OptimizationTestFunctions#scheffer)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Scheffer.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Scheffer.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Scheffer.png)
 
 ### [Eggholder](https://github.com/PasaOpasen/OptimizationTestFunctions#eggholder)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Eggholder.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Eggholder.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Eggholder.png)
 
 ### [Weierstrass](https://github.com/PasaOpasen/OptimizationTestFunctions#weierstrass)
 ![](https://github.com/PasaOpasen/OptimizationTestFunctions/blob/main/tests/heatmap%20for%20Weierstrass.png)
-![](tests/output/opt_test_funcs/Optimization%20process%20for%20Weierstrass.png)
+![](examples/output/opt_test_funcs/Optimization%20process%20for%20Weierstrass.png)
 
 
 
@@ -1713,9 +1713,9 @@ model.plot_results(save_as='plot_scores_process.png')
 # plot scores of last population
 model.plot_generation_scores(title='Population scores after ending of searching', save_as='plot_scores_end.png')
 ```
-![](tests/output/plot_scores_start.png)
-![](tests/output/plot_scores_process.png)
-![](tests/output/plot_scores_end.png)
+![](examples/output/plot_scores_start.png)
+![](examples/output/plot_scores_process.png)
+![](examples/output/plot_scores_end.png)
 
 
 
