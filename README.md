@@ -58,7 +58,7 @@ https://pasaopasen.github.io/geneticalgorithm2/
       - [**Crossover**](#crossover)
       - [**Mutation**](#mutation)
       - [**Selection**](#selection)
-  - [Methods and Properties of model:](#methods-and-properties-of-model)
+  - [Methods and Properties of model](#methods-and-properties-of-model)
 - [Examples for beginner](#examples-for-beginner)
   - [A minimal example](#a-minimal-example)
   - [The simple example with integer variables](#the-simple-example-with-integer-variables)
@@ -552,73 +552,9 @@ https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/mutations.html
 
 https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/selections.html
 
-## Methods and Properties of model:
+## Methods and Properties of model
 
-The main method if **run()**. It has parameters:
-
-* **no_plot** (`bool`) - do not plot results using matplotlib by default
-
-* **progress_bar_stream** (`Optional[str]`) - `'stdout'` to print progress bar to `stdout`, `'stderr'` for `stderr`, `None` to disable progress bar (also it can be faster by 10-20 seconds)
-
-* **disable_printing** (`bool`) - don't print any text (except progress bar)
-
-* **set_function** (`Optional[Callable[[np.ndarray], np.ndarray]]`): 2D-array -> 1D-array function, which applies to matrix of population (size (samples, dimension)) to estimate their values ("scores" in some sense)
-        
-* **apply_function_to_parents** (`bool`) - apply function to parents from previous generation (if it's needed), it can be needed at working with games agents, but for other tasks will just waste time
-
-* **start_generation** (`Union[str, Dict[str, np.ndarray], Generation, np.ndarray, Tuple[Optional[np.ndarray], Optional[np.ndarray]]]`) -- one of cases ([take a look](#how-to-initialize-start-population-how-to-continue-optimization-with-new-run)):
-  *  `Generation` object
-  *  dictionary with structure `{'variables':2D-array of samples, 'scores': function values on samples}` (if `'scores'` value is `None` the scores will be compute)
-  *  path to `.npz` file (`str`) with saved generation  
-  *  `np.ndarray` (with shape `(samples, dim)` or `(samples, dim+1)`) 
-  *  tuple of `np.ndarray`s / `None`. 
-
-* **studEA** (`bool`) - using stud EA strategy (crossover with best object always). Default is false. [Take a look](#standard-crossover-vs-stud-ea-crossover)
-* **mutation_indexes** (`Optional[Union[Sequence[int], Set[int]]]`) - indexes of dimensions where mutation can be performed (all dimensions by default). [Example](examples/mut_indexes.py)
-
-* **init_creator**: (`Optional[Callable[[], np.ndarray]]`), the function creates population samples. By default -- random uniform for real variables and random uniform for int. [Example](#optimization-with-oppositions)
-* **init_oppositors**: (`Optional[Sequence[Callable[[np.ndarray], np.ndarray]]]`) -- the list of oppositors creates oppositions for base population. No by default. [Example](#optimization-with-oppositions)
-* **duplicates_oppositor**: `Optional[Callable[[np.ndarray], np.ndarray]]`, oppositor for applying after duplicates removing. By default -- using just random initializer from creator. [Example](#duplicates-removing)
-* **remove_duplicates_generation_step**: `None/int`, step for removing duplicates (have a sense with discrete tasks). No by default. [Example](#duplicates-removing)
-* **revolution_oppositor** = `Optional[Callable[[np.ndarray], np.ndarray]]`, oppositor for revolution time. No by default. [Example](#revolutions)
-* **revolution_after_stagnation_step** = `None/int`, create revolution after this generations of stagnation. No by default. [Example](#revolutions)
-* **revolution_part** (`float`): the part of generation to being oppose. By default is 0.3. [Example](#revolutions)
-
-* **population_initializer** (`Tuple[int, Callable[[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]]`) -- object for actions at population initialization step to create better start population. [Take a look](#creating-better-start-population)
-
-* **stop_when_reached** (`Optional[float]`) -- stop searching after reaching this value (it can be potential minimum or something else)
-
-* **callbacks** (`Optional[Sequence[Callable[[int, List[float],  np.ndarray, np.ndarray], None]]]`) - list of callback functions with structure:
-  ```python 
-  def callback(generation_number, report_list, last_population_as_2D_array, last_population_scores_as_1D_array):
-      #
-      # do some action
-      #
-  ```
-    See [example of using callbacks](examples/callbacks.py). There are several callbacks in `Callbacks` class, such as:
-    * `Callbacks.SavePopulation(folder, save_gen_step = 50, file_prefix = 'population')`
-    * `Callbacks.PlotOptimizationProcess(folder, save_gen_step = 50, show = False, main_color = 'green', file_prefix = 'report')`
-
-* **middle_callbacks** (`Sequence`) - list of functions made `MiddleCallbacks` class (large opportunity, please, have a look at [this](#middle-callbacks)) 
-
-
-* **time_limit_secs** (`Optional[float]`) - limit time of working (in seconds). If `None`, there is no time limit (limit only for count of generation and so on). See [little example of using](examples/time_limit.py). Also there is simple conversion function for conversion some time in seconds:
-  ```python
-  from truefalsepython import time_to_seconds
-
-  total_seconds = time_to_seconds(
-      days = 2, # 2 days
-      hours = 13, # plus 13 hours
-      minutes = 7, # plus 7 minutes
-      seconds = 44 # plus 44 seconds
-  )
-  ```
-
-* **save_last_generation_as** (`Optional[str]`) - path to `.npz` file for saving last_generation as numpy dictionary like `{'population': 2D-array, 'scores': 1D-array}`, `None` if doesn't need to save in file; [take a look](#how-to-initialize-start-population-how-to-continue-optimization-with-new-run)
-
-* **seed** (`Optional[int]`) - random seed (None is doesn't matter)
-
-It would be more logical to use params like `studEA` as an algorithm param, but `run()`-way can be more comfortable for real using.
+Have a look at https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/geneticalgorithm2.html#GeneticAlgorithm2.run
 
     
 **output**:  

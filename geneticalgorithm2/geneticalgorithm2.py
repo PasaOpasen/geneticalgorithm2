@@ -483,9 +483,10 @@ class GeneticAlgorithm2:
         Args:
             no_plot: do not plot results using matplotlib by default
 
-            disable_printing: do not print log info of optimization process
+            disable_printing: do not print log info of optimization process (except progress bar)
 
-            progress_bar_stream: 'stdout', 'stderr' or None to disable progress bar
+            progress_bar_stream: 'stdout', 'stderr' or None to disable progress bar;
+                disabling progress bar can speed up the optimization process in many cases
 
             disable_progress_bar: deprecated
 
@@ -499,7 +500,8 @@ class GeneticAlgorithm2:
             set_function: set function (all samples -> score per sample) to be used instead of usual function
                 (usually for optimization purposes)
 
-            apply_function_to_parents: whether to apply function to parents from previous generation (if it's needed)
+            apply_function_to_parents: whether to apply function to parents from previous generation (if it's needed), 
+                it can be needed at working with games agents, but for other tasks will just waste time
 
             start_generation: initial generation object of any `GenerationConvertible` type
 
@@ -523,22 +525,28 @@ class GeneticAlgorithm2:
             population_initializer: object for actions at population initialization step
                 to create better start population. See doc
 
-            stop_when_reached: stop searching after reaching this value (it can be potential minimum or something else)
+            stop_when_reached: stop searching after reaching this value 
+                (it can be potential minimum or something else)
 
             callbacks: sequence of callback functions with structure:
                 (generation_number, report_list, last_population, last_scores) -> do some action
 
-            middle_callbacks: sequence of functions made `MiddleCallback` class
+            middle_callbacks: sequence of functions made by `MiddleCallback` class
 
-            time_limit_secs: limit time of working (in seconds)
+            time_limit_secs: limit time of working (in seconds);
+                `None` means no time limit (limit will be only for count of generation and so on)
 
-            save_last_generation_as: path to .npz file for saving last_generation as numpy dictionary like
-                {'population': 2D-array, 'scores': 1D-array}, None if doesn't need to save in file
+            save_last_generation_as: path to .npz file 
+                for saving last_generation as numpy dictionary like
+                {'population': 2D-array, 'scores': 1D-array}; 
+                None disables this option
 
             seed: random seed (None if doesn't matter)
 
         Notes:
-            if `function_timeout` is enabled then `function` must be set
+            - if `function_timeout` is enabled then `function` must be set
+            - it would be more logical to use params like `studEA` as an algorithm parameter, 
+                but `run()`-way can be more convenient for real using
         """
 
         if disable_progress_bar:
