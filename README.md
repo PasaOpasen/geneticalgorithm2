@@ -55,7 +55,6 @@ https://pasaopasen.github.io/geneticalgorithm2/
   - [Genetic algorithm's parameters](#genetic-algorithms-parameters)
     - [AlgorithmParams object](#algorithmparams-object)
     - [Parameters of algorithm](#parameters-of-algorithm)
-      - [**Count parameters**](#count-parameters)
       - [**Crossover**](#crossover)
       - [**Mutation**](#mutation)
       - [**Selection**](#selection)
@@ -520,155 +519,25 @@ print(result.last_generation)
 
 ## Constructor parameters
 
-* **function** (`Callable[[np.ndarray], float]`) - the given objective function to be minimized  
-NOTE: This implementation minimizes the given objective function. (For maximization multiply function by a negative sign: the absolute value of the output would be the actual objective function)
-        
-* **dimension** (`int`) - the number of decision variables
-        
-* **variable_type** (`Union[str, Sequence[str]]`) - 'bool' if all variables are Boolean; 'int' if all variables are integer; and 'real' if all variables are real value or continuous. For mixed types use sequence of string of type for each variable
-        
-* **variable_boundaries** (`Optional[Union[np.ndarray, Sequence[Tuple[float, float]]]]`) - Default None; leave it None if variable_type is 'bool'; otherwise provide an sequence of tuples of length two as boundaries for each variable; the length of the array must be equal dimension. 
-For example, `np.array([[0,100],[0,200]])` or `[(0, 100), (0, 200)]` determines lower boundary 0 and upper boundary 100 for first and upper boundary 200 for second variable where dimension is 2.
-        
-* **function_timeout** (`float`) - if the given function does not provide 
-output before function_timeout (unit is seconds) the algorithm raise error.
-For example, when there is an infinite loop in the given function. `None` means disabling
-        
-* **algorithm_parameters** (`Union[AlgorithmParams, Dict[str, Any]]`). Dictionary or AlgorithmParams object with fields:  
-    * @ **max_num_iteration** (`int/None`) - stopping criteria of the genetic algorithm (GA)  
-    * @ **population_size** (`int > 0`)   
-    * @ **mutation_probability** (`float in [0,1]`)
-    * @ **mutation_discrete_probability** (`float in [0,1]` or `None`)
-    * @ **elit_ration** (`float in [0,1]`) - part of elit objects in population; if > 0, there always will be 1 elit object at least  
-    * @ **parents_portion** (`float in [0,1]`) - part of parents from previous population to save in next population (including `elit_ration`)  
-    * @ **crossover_type** (`Union[str, Callable[[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]]`) - Default is `uniform`.
-    * @ **mutation_type** (`Union[str, Callable[[float, float, float], float]]`) - Default is `uniform_by_center`
-    * @ **mutation_discrete_type** (`Union[str, Callable[[int, int, int], int]]`) - Default is `uniform_discrete`
-    * @ **selection_type** (`Union[str, Callable[[np.ndarray, int], np.ndarray]]`) - Default is `roulette`
-    * @ **max_iteration_without_improv** (`int/None`) - maximum number of successive iterations without improvement. If `None` it is ineffective
+Have a look at https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/geneticalgorithm2.html#GeneticAlgorithm2.__init__
 
 ## Genetic algorithm's parameters
 
 ### AlgorithmParams object
 
-The parameters of GA is defined as a dictionary or `AlgorithmParams` object:
+The parameters of GA is defined as a dictionary or `AlgorithmParams` object: https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/data_types/algorithm_params.html
 
-```python
-
-algorithm_param = AlgorithmParams(
-                max_num_iteration = None,
-                population_size = 100,
-                mutation_probability = 0.1,
-                mutation_discrete_probability = None,
-                elit_ratio = 0.01,
-                parents_portion = 0.3,
-                crossover_type = 'uniform',
-                mutation_type = 'uniform_by_center',
-                mutation_discrete_type = 'uniform_discrete',
-                selection_type = 'roulette',
-                max_iteration_without_improv = None
-            )
-
-
-# old style with dictionary
-# sometimes it's easier to use this style
-# especially if u need to set only few params
-algorithm_param = {
-                   'max_num_iteration': None,
-                   'population_size':100,
-                   'mutation_probability': 0.1,
-                   'mutation_discrete_probability': None,
-                   'elit_ratio': 0.01,
-                   'parents_portion': 0.3,
-                   'crossover_type':'uniform',
-                   'mutation_type': 'uniform_by_center',
-                   'mutation_discrete_type': 'uniform_discrete',
-                   'selection_type': 'roulette',
-                   'max_iteration_without_improv':None
-                   }
-
-```
-
-To get actual default params use code:
+To get the global default params use code:
 ```python
 params = ga.default_params
 ```
 
-To get actual parameters of existing model use code:
+To get actual parameters of an existing model use code:
 ```python
 params = model.param
 ```
 
-An example of setting a new set of parameters for genetic algorithm and running `geneticalgorithm2` for our first simple example again:
-
-```python
-import numpy as np
-from geneticalgorithm2 import GeneticAlgorithm2 as ga
-
-
-def f(X):
-    return np.sum(X)
-
-
-varbound = [(0, 10)] * 3
-
-algorithm_param = {'max_num_iteration': 3000,
-                   'population_size': 100,
-                   'mutation_probability': 0.1,
-                   'mutation_discrete_probability': None,
-                   'elit_ratio': 0.01,
-                   'parents_portion': 0.3,
-                   'crossover_type': 'uniform',
-                   'mutation_type': 'uniform_by_center',
-                   'mutation_discrete_type': 'uniform_discrete',
-                   'selection_type': 'roulette',
-                   'max_iteration_without_improv': None}
-
-model = ga(function=f,
-           dimension=3,
-           variable_type='real',
-           variable_boundaries=varbound,
-           algorithm_parameters=algorithm_param
-           )
-
-model.run()
-```
-**Important**. U may use the small dictionary with only important parameters; other parameters will be default. It means the dictionary
-```js
-algorithm_param = {'max_num_iteration': 150,
-                   'population_size':1000}
-```
-is equal to:
-```js
-algorithm_param = {'max_num_iteration': 150,
-                   'population_size':1000,
-                   'mutation_probability': 0.1,
-                   'mutation_discrete_probability': None,
-                   'elit_ratio': 0.01,
-                   'parents_portion': 0.3,
-                   'crossover_type':'uniform',
-                   'mutation_type': 'uniform_by_center',
-                   'mutation_discrete_type': 'uniform_discrete',
-                   'selection_type': 'roulette',
-                   'max_iteration_without_improv':None}
-```
-
-But it is better to use `AlgorithmParams` object instead of dictionaries.
-
 ### Parameters of algorithm
-
-#### **Count parameters**
-
-* **max_num_iteration**: The termination criterion of GA. 
-If this parameter's value is `None` the algorithm sets maximum number of iterations automatically as a function of the dimension, boundaries, and population size. The user may enter any number of iterations that they want. It is highly recommended that the user themselves determines the **max_num_iterations** and not to use `None`. Notice that **max_num_iteration** has been changed to 3000 (it was already `None`). 
-
-* **population_size**: determines the number of trial solutions in each iteration.
-
-* **elit_ration**: determines the number of elites in the population. The default value is 0.01 (i.e. 1 percent). For example when population size is 100 and **elit_ratio** is 0.01 then there is one elite unit in the population. If this parameter is set to be zero then `geneticalgorithm2` implements a standard genetic algorithm instead of elitist GA. [See example](#standard-ga-vs-elitist-ga) of difference
-
-* **parents_portion**: the portion of population filled by the members of the previous generation (aka parents); default is 0.3 (i.e. 30 percent of population)
-
-* **max_iteration_without_improv**: if the algorithms does not improve the objective function over the number of successive iterations determined by this parameter, then GA stops and report the best found solution before the `max_num_iterations` to be met. The default value is `None`. 
 
 #### **Crossover**
 
