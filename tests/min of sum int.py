@@ -24,16 +24,18 @@ model.run()
 
 # check discrete mutation
 
-varbound = [[0,10]]*300
+varbound = [[0, 10]] * 300
 
-model = ga(function=f, dimension=300, variable_type='int',
-           variable_boundaries=varbound,
-           algorithm_parameters={
-               'mutation_discrete_type': 'uniform_discrete',
-               'max_num_iteration': 1000
-           })
+model = ga(
+    dimension=300, variable_type='int',
+    variable_boundaries=varbound,
+    algorithm_parameters={
+       'mutation_discrete_type': 'uniform_discrete',
+       'max_num_iteration': 1000
+    }
+)
 
-model.run(stop_when_reached=0)
+model.run(stop_when_reached=0, function=f,)
 
 
 model = ga(function=f, dimension=300, variable_type='int',

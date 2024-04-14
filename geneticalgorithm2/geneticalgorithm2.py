@@ -74,9 +74,9 @@ class GeneticAlgorithm2:
 
     def __init__(
         self,
-        function: FunctionToMinimize,
+        function: FunctionToMinimize = None,
 
-        dimension: int,
+        dimension: int = 0,
         variable_type: Union[VARIABLE_TYPE, Sequence[VARIABLE_TYPE]] = 'bool',
         variable_boundaries: Optional[Union[array2D, Sequence[Tuple[float, float]]]] = None,
 
@@ -89,8 +89,8 @@ class GeneticAlgorithm2:
         initializes the GA object and performs main checks
 
         Args:
-            function: the given objective function to be minimized
-            dimension: the number of decision variables, the population samples dimention
+            function: the given objective function to be minimized -- deprecated and moved to run() method
+            dimension: the number of decision variables, the population samples dimension
 
             variable_type: string means the variable type for all variables,
                 for mixed types use sequence of strings of type for each variable
@@ -108,7 +108,7 @@ class GeneticAlgorithm2:
             function_timeout: if the given function does not provide
                 output before function_timeout (unit is seconds) the algorithm raises error.
                 For example, when there is an infinite loop in the given function.
-                `None` means disabling
+                `None` means disabling -- deprecated and moved to run()
 
             algorithm_parameters: AlgorithmParams object or usual dictionary with algorithm parameter;
                 it is not mandatory to provide all possible parameters
@@ -117,9 +117,6 @@ class GeneticAlgorithm2:
             - This implementation minimizes the given objective function.
             For maximization u can multiply the function by -1 (for instance): the absolute
                 value of the output would be the actual objective function
-
-            - If u want to use set_function only and maybe u dont have usual function,
-                just set the function to something like lambda x: 0 but set function_timeout=None too
 
         for more details and examples of implementation please visit:
             https://github.com/PasaOpasen/geneticalgorithm2
@@ -137,8 +134,10 @@ class GeneticAlgorithm2:
         self.dup_oppositor = None
         self.creator = None
         self.init_oppositors = None
+
         self.f: Callable[[array1D], float] = None
         self.funtimeout: float = None
+
         self.set_function: Callable[[np.ndarray], np.ndarray] = None
 
         # self.dim: int = None
@@ -191,20 +190,18 @@ class GeneticAlgorithm2:
 
         #############################################################
         # input function
-        assert (callable(function)), "function must be callable!"
-        self.f = function
-
-        if function_timeout is not None and function_timeout > 0:
-            try:
-                from func_timeout import func_timeout, FunctionTimedOut
-            except ModuleNotFoundError:
-                raise ModuleNotFoundError(
-                    "function_timeout > 0 needs additional package func_timeout\n"
-                    "run `python -m pip install func_timeout`\n"
-                    "or disable this parameter: function_timeout=None"
-                )
-
-        self.funtimeout = None if function_timeout is None else float(function_timeout)
+        if function:
+            warnings.warn(
+                f"function is deprecated in init constructor and will be removed in version 7. "
+                f"Move this argument to run() method"
+            )
+            self._check_function(function)
+        if function_timeout:
+            warnings.warn(
+                f"function_timeout is deprecated in init constructor and will be removed in version 7. "
+                f"Move this argument to run() method"
+            )
+            self._check_function_timeout(function_timeout)
 
         #############################################################
         
@@ -325,6 +322,24 @@ class GeneticAlgorithm2:
         else:
             self.max_stagnations = math.ceil(max_it)
 
+    def _check_function(self, function: Callable[[array1D], float]):
+        assert callable(function), "function must be callable!"
+        self.f = function
+
+    def _check_function_timeout(self, function_timeout: Optional[float]):
+
+        if function_timeout is not None and function_timeout > 0:
+            try:
+                from func_timeout import func_timeout, FunctionTimedOut
+            except ModuleNotFoundError:
+                raise ModuleNotFoundError(
+                    "function_timeout > 0 needs additional package func_timeout\n"
+                    "run `python -m pip install func_timeout`\n"
+                    "or disable this parameter: function_timeout=None"
+                )
+
+        self.funtimeout = None if function_timeout is None else float(function_timeout)
+
     #endregion
 
     #region REPORT
@@ -432,6 +447,9 @@ class GeneticAlgorithm2:
         # deprecated
         disable_progress_bar: bool = False,
 
+        function: FunctionToMinimize = None,
+        function_timeout: Optional[float] = None,
+
         set_function: SetFunctionToMinimize = None,
         apply_function_to_parents: bool = False,
         start_generation: GenerationConvertible = Generation(),
@@ -471,7 +489,15 @@ class GeneticAlgorithm2:
 
             disable_progress_bar: deprecated
 
-            set_function: set function to be used instead of usual function
+            function: the given objective function (sample -> its score) to be minimized;
+
+            function_timeout: if the given function does not provide
+                output before function_timeout (unit is seconds) the algorithm raises error.
+                For example, when there is an infinite loop in the given function.
+                `None` means disabling
+
+            set_function: set function (all samples -> score per sample) to be used instead of usual function
+                (usually for optimization purposes)
 
             apply_function_to_parents: whether to apply function to parents from previous generation (if it's needed)
 
@@ -510,6 +536,9 @@ class GeneticAlgorithm2:
                 {'population': 2D-array, 'scores': 1D-array}, None if doesn't need to save in file
 
             seed: random seed (None if doesn't matter)
+
+        Notes:
+            if `function_timeout` is enabled then `function` must be set
         """
 
         if disable_progress_bar:
@@ -663,6 +692,16 @@ class GeneticAlgorithm2:
             if time_limit_secs is None
             else (lambda: int(time.time() - start_time) >= time_limit_secs)
         )
+
+        # combine with deprecated parts
+        function = function or self.f
+        function_timeout = function_timeout or self.funtimeout
+
+        assert function or set_function, 'no function to minimize'
+        if function:
+            self._check_function(function)
+        if function_timeout:
+            self._check_function_timeout(function_timeout)
 
         self.set_function = set_function or GeneticAlgorithm2.default_set_function(self.f)
 

@@ -16,6 +16,7 @@ https://pasaopasen.github.io/geneticalgorithm2/
 - [Updates information](#updates-information)
   - [**Future**](#future)
   - [**TODO firstly**](#todo-firstly)
+  - [6.9.1 refactor](#691-refactor)
   - [6.9.0 reborn](#690-reborn)
   - [6.8.7 minor update](#687-minor-update)
   - [6.8.6 minor update](#686-minor-update)
@@ -133,12 +134,12 @@ Features of this package:
     
 # Installation
 
-Install this package with standard dependencies to use the entire functional.
+Install this package with standard light dependencies to use the base functional.
 ```
 pip install geneticalgorithm2
 ```
 
-Install this package with full dependencies to use all provided functional.
+Install this package with full dependencies to use all provided functional including plotting and built-in parallelism tools.
 
 ```
 pip install geneticalgorithm2[full]
@@ -149,13 +150,16 @@ pip install geneticalgorithm2[full]
 ## **Future**
 
 - duplicates removing and revolutions will be moved to `MiddleCallbacks` and removed as alone `run()` parameters
-- `function_timeout` and `function` will be moved to `run()` method
 - new stop criteria callbacks (min std, max functions evaluations)
 - `vartype` will support strings like `iiiiibbf`
 
 ## **TODO firstly**
-- Remove old style mensions from README
+- Remove old style mentions from README
 
+## 6.9.1 refactor
+
+- Finally move `function_timeout` and `function` to `run()` method and deprecate its usage in init()
+- `function` is not mandatory to be non-empty 
 
 ## 6.9.0 reborn
 
