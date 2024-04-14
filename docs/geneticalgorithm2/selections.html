@@ -288,7 +288,7 @@
                 <section id="SelectionFunc">
                     <div class="attr variable">
             <span class="name">SelectionFunc</span><span class="annotation">: typing_extensions.TypeAlias</span>        =
-<span class="default_value">typing.Callable[[ForwardRef(&#39;np.ndarray&#39;), int], ForwardRef(&#39;np.ndarray&#39;)]</span>
+<span class="default_value">typing.Callable[[numpy.ndarray, int], numpy.ndarray]</span>
 
         
     </div>
@@ -524,7 +524,7 @@
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">selections_dict</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Callable</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span>:</span></span>
+        <span class="name">selections_dict</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span>:</span></span>
 
                 <label class="view-source-button" for="Selection.selections_dict-view-source"><span>View Source</span></label>
 
@@ -556,7 +556,7 @@
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">fully_random</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Callable</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
+        <span class="name">fully_random</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="Selection.fully_random-view-source"><span>View Source</span></label>
 
@@ -585,7 +585,7 @@
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">roulette</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Callable</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
+        <span class="name">roulette</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="Selection.roulette-view-source"><span>View Source</span></label>
 
@@ -610,7 +610,7 @@
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">stochastic</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Callable</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
+        <span class="name">stochastic</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="Selection.stochastic-view-source"><span>View Source</span></label>
 
@@ -655,7 +655,7 @@
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">sigma_scaling</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span>,</span><span class="param">	<span class="n">is_noisy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Callable</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
+        <span class="name">sigma_scaling</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span>,</span><span class="param">	<span class="n">is_noisy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="Selection.sigma_scaling-view-source"><span>View Source</span></label>
 
@@ -690,7 +690,7 @@
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">ranking</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Callable</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
+        <span class="name">ranking</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="Selection.ranking-view-source"><span>View Source</span></label>
 
@@ -715,7 +715,7 @@
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">linear_ranking</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">selection_pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span></span><span class="return-annotation">) -> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Callable</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
+        <span class="name">linear_ranking</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">selection_pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="Selection.linear_ranking-view-source"><span>View Source</span></label>
 
@@ -758,7 +758,7 @@
                     <div class="decorator">@staticmethod</div>
 
         <span class="def">def</span>
-        <span class="name">tournament</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">tau</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span></span><span class="return-annotation">) -> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Callable</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
+        <span class="name">tournament</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">tau</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span></span><span class="return-annotation">) -> <span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="Selection.tournament-view-source"><span>View Source</span></label>
 
