@@ -556,28 +556,16 @@ https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/selections.html
 
 Have a look at https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/geneticalgorithm2.html#GeneticAlgorithm2.run
 
-    
-**output**:  
-  
-* `result`: is a wrap on last generation with fields:
-  * `last_generation` -- `Generation` object of last generation
-  * `variable` -- best unit of last generation
-  * `score` -- metric of the best unit
-  
-* `report`: is a record of the progress of the algorithm over iterations. Also u can specify to report not only best values. [Go to](#report-checker)
-
-
-
-
 # Examples for beginner
 
 ## A minimal example 
-Assume we want to find a set of `X = (x1,x2,x3)` that minimizes function `f(X) = x1 + x2 + x3` where `X` can be any real number in `[0, 10]`.
 
-This is a trivial problem and we already know that the answer is `X = (0,0,0)` where `f(X) = 0`.  
+Assume we want to find a set of `X = (x1, x2, x3)` that minimizes function `f(X) = x1 + x2 + x3` where `X` can be any real number in `[0, 10]`.
 
-We just use this simple example to see how to implement geneticalgorithm2. First we import geneticalgorithm2 and [numpy](https://numpy.org). Next, we define 
-function `f` which we want to minimize and the boundaries of the decision variables. Then simply geneticalgorithm2 is called to solve the defined optimization problem as follows:
+This is a trivial problem and we already know that the answer is `X = (0, 0, 0)` where `f(X) = 0`.  
+
+We just use this simple example to show how to implement it with `geneticalgorithm2`. First we import `geneticalgorithm2` and [numpy](https://numpy.org). Next, we define 
+function `f` which we want to minimize and the boundaries of the decision variables. Then simply `geneticalgorithm2` is called to solve the defined optimization problem as follows:
 
 ```python
 import numpy as np
@@ -590,20 +578,10 @@ def f(X):
 
 varbound = [[0, 10]] * 3
 
-model = ga(function=f, dimension=3, variable_type='real', variable_boundaries=varbound)
+model = ga(dimension=3, variable_type='real', variable_boundaries=varbound)
 
-model.run()
+model.run(function=f)
 ```
-
-    
-**geneticalgorithm2 has some arguments**:   
-1. Obviously the first argument is the function `f` we already defined.  
-2. Our problem has three variables so we set dimension equal `3`.   
-3. Variables are real (continuous) so we use string `'real'` to notify the type of 
-variables (geneticalgorithm2 accepts other types including boolean, integers and 
-mixed; see other examples).  
-1. Finally, we input `varbound` which includes the boundaries of the variables. 
-Note that the length of variable_boundaries must be equal to dimension.
   
 If you run the code, you should see a progress bar that shows the progress of the 
 genetic algorithm (GA) and then the solution, objective function value and the convergence curve as follows:
@@ -633,12 +611,11 @@ from geneticalgorithm2 import GeneticAlgorithm2 as ga
 def f(X):
     return np.sum(X)
 
-
 varbound = [[0, 10]] * 3
 
-model = ga(function=f, dimension=3, variable_type='int', variable_boundaries=varbound)
+model = ga(dimension=3, variable_type='int', variable_boundaries=varbound)
 
-model.run()
+model.run(function=f)
 ```
 So, as it is seen the only difference is that for `variable_type` we use string `'int'`. 
 
@@ -656,20 +633,18 @@ from geneticalgorithm2 import GeneticAlgorithm2 as ga
 def f(X):
     return np.sum(X)
 
+model = ga(dimension=30, variable_type='bool')
 
-model = ga(function=f, dimension=30, variable_type='bool')
-
-model.run()
+model.run(function=f)
 ```
-
 Note for variable_type we use string `'bool'` when all variables are boolean.  
 Note that when variable_type equal `'bool'` there is no need for `variable_boundaries` to be defined.
 
 ## The simple example with mixed variables
 
 Considering the problem given in the the simple example above where we want to minimize `f(X) = x1 + x2 + x3`. 
-Now assume `x1` is a real (continuous) variable in `[0.5,1.5]`, `x2` is an integer variable in `[1,100]`, and `x3` is a boolean variable that can be either zero or one.
-We already know that the answer is `X = (0.5,1,0)` where `f(X) = 1.5`
+Now assume `x1` is a real (continuous) variable in `[0.5; 1.5]`, `x2` is an integer variable in `[1;100]`, and `x3` is a boolean variable that can be either zero or one.
+We already know that the answer is `X = (0.5, 1, 0)` where `f(X) = 1.5`.
 We implement geneticalgorithm2 as the following:
 
 ```python
@@ -683,13 +658,14 @@ def f(X):
 
 varbound = [[0.5, 1.5], [1, 100], [0, 1]]
 vartype = ('real', 'int', 'int')
-model = ga(function=f, dimension=3, variable_type=vartype, variable_boundaries=varbound)
+model = ga(dimension=3, variable_type=vartype, variable_boundaries=varbound)
 
-model.run()
+model.run(function=f)
 ```
 
 ## Optimization problems with constraints
-In all above examples, the optimization problem was unconstrained. Now consider that we want to minimize `f(X) = x1+x2+x3` where `X` is a set of real variables in `[0, 10]`. Also we have an extra constraint so that sum of `x1` and `x2` is equal or greater than 2. The minimum of `f(X)` is 2.
+
+In all above examples, the optimization problem was unconstrained. Now consider that we want to minimize `f(X) = x1+x2+x3` where `X` is a set of real variables in `[0; 10]`. Also we have an extra constraint so that sum of `x1` and `x2` is equal or greater than 2. The minimum of `f(X)` is 2.
 In such a case, a trick is to define penalty function. Hence we use the code below:
 
 ```python
@@ -706,9 +682,9 @@ def f(X):
 
 varbound = [[0, 10]] * 3
 
-model = ga(function=f, dimension=3, variable_type='real', variable_boundaries=varbound)
+model = ga(dimension=3, variable_type='real', variable_boundaries=varbound)
 
-model.run()
+model.run(function=f)
 
 ```
 As seen above we add a penalty to the objective function whenever the constraint is not met.  
@@ -723,9 +699,9 @@ Some hints about how to define a penalty function:
 ## Middle example: select fixed count of objects from set
 
 For some task u need to think a lot and create good specific crossover or mutation functions. For example, take a look at this problem:
-
+```
     From set like X = {x1, x2, x3, ..., xn} u should select only k objects which get the best function value
-
+```
 U can do it using this code:
 
 ```python
@@ -775,20 +751,24 @@ def my_crossover(parent_a, parent_b):
     return children[0, :], children[1, :]
 
 
-model = ga(function=f,
-           dimension=objects_count,
-           variable_type='bool',
-           algorithm_parameters={
-               'max_num_iteration': 500,
-               'mutation_probability': 0,  # no mutation, just crossover
-               'elit_ratio': 0.05,
-               'parents_portion': 0.3,
-               'crossover_type': my_crossover,
-               'max_iteration_without_improv': 20
-           }
-           )
+model = ga(
+    dimension=objects_count,
+    variable_type='bool',
+    algorithm_parameters={
+        'max_num_iteration': 500,
+        'mutation_probability': 0,  # no mutation, just crossover
+        'elit_ratio': 0.05,
+        'parents_portion': 0.3,
+        'crossover_type': my_crossover,
+        'max_iteration_without_improv': 20
+    }
+)
 
-model.run(no_plot=False, start_generation=(start_generation, None))
+model.run(
+    function=f,
+    no_plot=False, 
+    start_generation=(start_generation, None)
+)
 ```
 
 # U should know these features
@@ -852,13 +832,10 @@ For two example parents (*one with ones* and *one with zeros*) next crossovers w
 
 ## Function timeout
 
-**geneticalgorithm2** is designed such that if the given function does not provide
-any output before timeout (the default value is 10 seconds), the algorithm
-would be terminated and raise the appropriate error. 
+**geneticalgorithm2** inherited several features from `geneticalgorithm` package sush as that if the given function does not provide any output before timeout, the algorithm would be terminated and raise the appropriate error. 
 
-In such a case make sure the given function
-works correctly (i.e. there is no infinite loop in the given function). Also if the given function takes more than 10 seconds to complete the work
-make sure to increase function_timeout in arguments.
+In such a case make sure the given function works correctly (i.e. there is no infinite loop in the given function). Also if the given function takes more than 10 seconds to complete the work
+make sure to increase `function_timeout` in arguments.
 
 ## Standard GA vs. Elitist GA
 
@@ -874,22 +851,7 @@ The convergence curve of an elitist genetic algorithm is always non-increasing. 
 
 ## Creating better start population
 
-There is `Population_initializer(select_best_of = 4, local_optimization_step = 'never', local_optimizer = None)` object for creating better start population. It has next arguments:
-
-* `select_best_of` (`int`) -- select `1/select_best_of` best part of start population. For example, for `select_best_of = 4` and `population_size = N` will be selected N best objects from 5N generated objects (if `start_generation = None`). If `start_generation` is not None, it will be selected best `size(start_generation)/N`  objects
-
-* `local_optimization_step` (`str`) -- when should we do local optimization? Available values:
-    
-    * `'never'` -- don't do local optimization
-    * `'before_select'` -- before selection best N objects (example: do local optimization for 5N objects and select N best results)
-    * `'after_select'` -- do local optimization on best selected N objects
-
-* `local_optimizer` (function) -- local optimization function like:
-    ```python
-    def loc_opt(object_as_array, current_score):
-        # some code
-        return better_object_as_array, better_score
-    ```
+There is `get_population_initializer(select_best_of = 4, local_optimization_step = 'never', local_optimizer = None)` function for creating start population creators. Take a look at [its docs](https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/population_initializer.html)
 
 ### Select best N of kN
 
@@ -924,25 +886,31 @@ varbound = [[-100, 100]] * 15
 
 available_values = [np.arange(-100, 101)] * 15
 
-my_local_optimizer = lambda arr, score: Hill_Climbing_descent(function=f, available_predictors_values=available_values,
-                                                              max_function_evals=50, start_solution=arr)
+my_local_optimizer = lambda arr, score: Hill_Climbing_descent(
+    function=f, available_predictors_values=available_values,
+    max_function_evals=50, start_solution=arr
+)
 
-model = ga(function=f, dimension=varbound.shape[0],
-           variable_type='int',
-           variable_boundaries=varbound,
-           algorithm_parameters={
-               'max_num_iteration': iterations,
-               'population_size': 400
-           })
+model = ga(
+    dimension=varbound.shape[0],
+    variable_type='int',
+    variable_boundaries=varbound,
+    algorithm_parameters={
+        'max_num_iteration': iterations,
+        'population_size': 400
+    }
+)
 
 for time in ('before_select', 'after_select', 'never'):
-    model.run(no_plot=True,
-              population_initializer=get_population_initializer(
-                  select_best_of=3,
-                  local_optimization_step=time,
-                  local_optimizer=my_local_optimizer
-              )
-              )
+    model.run(
+        function=f
+        no_plot=True,
+        population_initializer=get_population_initializer(
+            select_best_of=3,
+            local_optimization_step=time,
+            local_optimizer=my_local_optimizer
+        )
+    )
 
     plt.plot(model.report, label=f"local optimization time = '{time}'")
 
@@ -980,7 +948,7 @@ It can be useful for run-speed to use cache with *some discrete tasks*. For this
 ```python
 import np_lru_cache
 
-@np_lru_cache(maxsize = some_size)
+@np_lru_cache(maxsize=some_size)
 def minimized_func(arr):
     # code
     return result

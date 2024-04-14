@@ -130,6 +130,9 @@ class GeneticAlgorithm2:
         # self.discrete_mutation: Callable[[int, int, int], int] = None
         # self.selection: Callable[[np.ndarray, int], np.ndarray] = None
 
+        self.result = None
+        self.best_function = None
+
         self.revolution_oppositor = None
         self.dup_oppositor = None
         self.creator = None
@@ -476,7 +479,7 @@ class GeneticAlgorithm2:
         time_limit_secs: Optional[float] = None,
         save_last_generation_as: Optional[str] = None,
         seed: Optional[int] = None
-    ):
+    ) -> GAResult:
         """
         runs optimization process
 
@@ -542,6 +545,10 @@ class GeneticAlgorithm2:
                 None disables this option
 
             seed: random seed (None if doesn't matter)
+
+        Returns:
+            `GAResult` object;
+            also fills the self.report and self.result with many report information
 
         Notes:
             - if `function_timeout` is enabled then `function` must be set
