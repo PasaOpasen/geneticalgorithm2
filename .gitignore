@@ -61,5 +61,8 @@ target/
 venv
 documentation
 
+repo-utils
+pypi.sh
+
 .vscode
 .idea

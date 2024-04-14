@@ -11,18 +11,17 @@ set -e
 
 pkg=geneticalgorithm2
 
-PYTHON="python"
-for python in "venv/bin/python" ".venv/bin/python" 
-do
-    if [ -x "$(command -v ${python})" ]
-    then
-        echo -e "Use python from ${python}"
-        PYTHON=${python}
-        break
-    else
-        echo "Not found python from ${python}"
-    fi
-done
+if [ -d repo-utils ]
+then 
+    (
+        cd repo-utils
+        git pull
+    )
+else
+    GIT_SSL_NO_VERIFY=1 git clone https://github.com/PasaOpasen/repo-utils
+fi
+
+PYTHON="$(cd repo-utils && bash get-python.sh)"
 
 #
 # rm old files
