@@ -7,3 +7,4 @@ pytest
 wheel
 setuptools
 pdoc
+twine
