@@ -129,7 +129,7 @@ Features of this package:
 
 * written on **pure python**
 * **extremely fast**
-* **no hard dependencies** (only numpy primary, can work without matplotlib)
+* **no hard dependencies** (only numpy primary)
 * **easy to run**: no need to perform long task-setup process
 * easy to logging, reach **support of flexible callbacks**
 * **many built-in plotting functions**
@@ -529,7 +529,7 @@ Have a look at https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/
 
 ### AlgorithmParams object
 
-The parameters of GA is defined as a dictionary or `AlgorithmParams` object: https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/data_types/algorithm_params.html
+The parameters of GA are defined as a dictionary or `AlgorithmParams` object: https://pasaopasen.github.io/geneticalgorithm2/geneticalgorithm2/data_types/algorithm_params.html
 
 To get the global default params use code:
 ```python
