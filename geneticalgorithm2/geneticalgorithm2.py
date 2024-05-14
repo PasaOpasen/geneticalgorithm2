@@ -40,8 +40,11 @@ from .callbacks import MiddleCallbackFunc, SimpleCallbackFunc
 VARIABLE_TYPE: TypeAlias = Literal['int', 'real', 'bool']
 """
 the variable type for a given or all dimension, determines the values discretion:
+
     real: double numbers
+
     int: integer number only
+    
     bool: in the fact is integer with bounds [0, 1]
 """
 
